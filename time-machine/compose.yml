@@ -11,7 +11,6 @@ services:
       TM_GID: ${TM_GID:?err}
       SET_PERMISSIONS: ${SET_PERMISSIONS:?err}
       VOLUME_SIZE_LIMIT: ${VOLUME_SIZE_LIMIT:?err}
-      EXTERNAL_CONF: /users
     network_mode: host
     volumes:
       - ${TM_BACKUP_PATH:?err}:/opt
