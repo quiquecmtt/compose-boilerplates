@@ -11,11 +11,7 @@ services:
       TM_GID: ${TM_GID:?err}
       SET_PERMISSIONS: ${SET_PERMISSIONS:?err}
       VOLUME_SIZE_LIMIT: ${VOLUME_SIZE_LIMIT:?err}
-    ports:
-      - 137:137/udp
-      - 138:138/udp
-      - 139:139
-      - 445:445
+    network_mode: host
     volumes:
       - ${TM_BACKUP_PATH:?err}:/opt/${TM_USERNAME:?err}
       - type: tmpfs
