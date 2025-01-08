@@ -14,7 +14,6 @@ services:
       EXTERNAL_CONF: /users
     network_mode: host
     volumes:
-      - ${TM_USERS_DIR:?err}:/users
       - ${TM_BACKUP_PATH:?err}:/opt
       - type: tmpfs
         target: /run/samba
