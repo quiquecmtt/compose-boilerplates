@@ -1,0 +1,21 @@
+name: time-machine
+
+services:
+  app:
+    image: mbentley/timemachine:smb
+    environment:
+      TM_USERNAME: ${TM_USERNAME:?err}
+      TM_GROUPNAME: ${TM_GROUPNAME:?err}
+      PASSWORD: ${PASSWORD:?err}
+      TM_UID: ${TM_UID:?err}
+      TM_GID: ${TM_GID:?err}
+      SET_PERMISSIONS: ${SET_PERMISSIONS:?err}
+      VOLUME_SIZE_LIMIT: ${VOLUME_SIZE_LIMIT:?err}
+      EXTERNAL_CONF: /users
+    network_mode: host
+    volumes:
+      - ${TM_USERS_DIR:?err}:/users
+      - ${TM_BACKUP_PATH:?err}:/opt
+      - type: tmpfs
+        target: /run/samba
+    restart: unless-stopped
