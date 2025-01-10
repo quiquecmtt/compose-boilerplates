@@ -8,6 +8,7 @@ x-ts-common: &ts-common
     - 1.1.1.1
     - 100.100.100.100
   environment: &ts-common-env
+    TS_AUTH_ONCE: ${TS_AUTHONCE:-true}
     TS_AUTHKEY: ${TS_AUTHKEY:?err}
     TS_STATE_DIR: ${TS_STATE_DIR:-/var/lib/tailscale}
     TS_DEST_IP: ${TRAEFIK_IP:?err}
