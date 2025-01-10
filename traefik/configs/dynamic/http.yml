@@ -1,0 +1,32 @@
+http:
+  middlewares:
+    redirect-to-https:
+      redirectScheme:
+        scheme: https
+    strip-prefix:
+      stripPrefix:
+        prefixes:
+          - /homer
+          - /nextcloud
+          - /pihole
+          - /portainer
+          - /redisinsight
+          - /traefik
+    redirect-pihole-admin:
+      redirectRegex:
+        regex: /pihole/$$
+        replacement: /pihole/admin
+    redirect-transmission-web:
+      redirectRegex:
+        regex: /transmission/
+        replacement: /transmission/web/
+
+  routers:
+    redirect-to-https:
+      entrypoints:
+        - web
+      middlewares:
+        - redirect-to-https
+      rule: HostRegexp(`.+`)
+      service: noop@internal
+

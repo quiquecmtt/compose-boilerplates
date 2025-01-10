@@ -1,0 +1,15 @@
+tls:
+  stores:
+    default:
+      defaultCertificate:
+        certFile: '/ts-certs/home.{{ env "TS_TLD" }}.crt'
+        keyFile: '/ts-certs/home.{{ env "TS_TLD" }}.key'
+  certificates:
+    - certFile: '/ts-certs/auth.{{ env "TS_TLD" }}.crt'
+      keyFile: '/ts-certs/auth.{{ env "TS_TLD" }}.key'
+    - certFile: '/ts-certs/home.{{ env "TS_TLD" }}.crt'
+      keyFile: '/ts-certs/home.{{ env "TS_TLD" }}.key'
+    - certFile: '/ts-certs/play.{{ env "TS_TLD" }}.crt'
+      keyFile: '/ts-certs/play.{{ env "TS_TLD" }}.key'
+    - certFile: '/ts-certs/photos.{{ env "TS_TLD" }}.crt'
+      keyFile: '/ts-certs/photos.{{ env "TS_TLD" }}.key'

@@ -1,0 +1,29 @@
+api:
+  dashboard: true
+  debug: true
+
+entryPoints:
+  web:
+    address: ":80"
+  web-secure:
+    address: ":443"
+
+serversTransport:
+  insecureSkipVerify: true
+
+metrics:
+  prometheus:
+    addEntrypointsLabels: true
+    addRoutersLabels: true
+    addServicesLabels: true
+
+providers:
+  docker:
+    endpoint: "unix:///var/run/docker.sock"
+    exposedByDefault: false
+    network: traefik-net
+    watch: true
+  file:
+    directory: /dynamic
+    watch: true
+

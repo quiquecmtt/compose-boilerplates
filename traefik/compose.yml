@@ -1,0 +1,109 @@
+x-ts-common: &ts-common
+  image: tailscale/tailscale:latest
+  cap_add:
+    - net_admin
+  devices:
+    - /dev/net/tun:/dev/net/tun
+  dns:
+    - 1.1.1.1
+    - 100.100.100.100
+  environment: &ts-common-env
+    TS_AUTHKEY: ${TS_AUTHKEY:?err}
+    TS_STATE_DIR: ${TS_STATE_DIR:-/var/lib/tailscale}
+    TS_DEST_IP: ${TRAEFIK_IP:?err}
+    TS_USERSPACE: ${TS_USERSPACE:-false}
+    TS_TLD: ${TS_TLD:?err}
+  healthcheck:
+    test: tailscale cert --cert-file /ts-certs/$${TS_HOSTNAME}.$${TS_TLD}.crt --key-file /ts-certs/$${TS_HOSTNAME}.$${TS_TLD}.key $${TS_HOSTNAME}.$${TS_TLD}
+    interval: 86400s
+    timeout: 300s
+    retries: 3
+    start_period: 10s
+
+services:
+  ts-auth:
+    <<: *ts-common
+    hostname: auth
+    environment:
+      <<: *ts-common-env
+      TS_SOCKET: /ts-sockets/tailscaled-auth.sock
+      TS_HOSTNAME: auth
+    volumes:
+      - ts-sockets:/ts-sockets 
+      - ts-certs:/ts-certs 
+      - ts-state-auth:/var/lib/tailscale
+  ts-home:
+    <<: *ts-common
+    hostname: home
+    environment:
+      <<: *ts-common-env
+      TS_SOCKET: /ts-sockets/tailscaled-home.sock
+      TS_HOSTNAME: home
+    volumes:
+      - ts-sockets:/ts-sockets 
+      - ts-certs:/ts-certs 
+      - ts-state-home:/var/lib/tailscale
+  ts-photos:
+    <<: *ts-common
+    hostname: photos
+    environment:
+      <<: *ts-common-env
+      TS_SOCKET: /ts-sockets/tailscaled-photos.sock
+      TS_HOSTNAME: photos
+    volumes:
+      - ts-sockets:/ts-sockets 
+      - ts-certs:/ts-certs 
+      - ts-state-photos:/var/lib/tailscale
+  ts-play:
+    <<: *ts-common
+    hostname: play
+    environment:
+      <<: *ts-common-env
+      TS_SOCKET: /ts-sockets/tailscaled-play.sock
+      TS_HOSTNAME: play
+    volumes:
+      - ts-sockets:/ts-sockets 
+      - ts-certs:/ts-certs 
+      - ts-state-play:/var/lib/tailscale
+  app:
+    image: traefik:latest
+    environment:
+      TS_TLD: monkey-uaru.ts.net
+    ports:
+      - 80:80/tcp
+      - 80:80/udp
+      - 443:443/tcp
+      - 443:443/udp
+    volumes:
+      - ./configs/traefik.yml:/traefik.yml
+      - ./configs/dynamic:/dynamic
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ts-certs:/ts-certs
+      - ts-sockets:/ts-sockets
+    healthcheck: 
+      test: touch /dynamic/auto_reload.yml
+      interval: 86400s
+      timeout: 300s
+      retries: 3
+      start_period: 10s
+    security_opt:
+      - no-new-privileges:true
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.traefik.entrypoints=web-secure
+      - traefik.http.routers.traefik.rule=PathPrefix(`/traefik`) || HeaderRegexp(`Referer`,`.*/traefik/.*`)
+      - traefik.http.routers.traefik.middlewares=strip-prefix@file
+      - traefik.http.routers.traefik.tls=true
+      - traefik.http.routers.traefik.service=api@internal
+
+volumes:
+  ts-certs:
+  ts-sockets:
+  ts-state-auth:
+  ts-state-home:
+  ts-state-play:
+  ts-state-photos:
+
+networks:
+  default:
+    name: traefik-net
