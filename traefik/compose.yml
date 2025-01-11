@@ -67,7 +67,7 @@ services:
       - ts-sockets:/ts-sockets 
       - ts-certs:/ts-certs 
       - ts-state-play:/var/lib/tailscale
-  app:
+  proxy:
     image: docker.io/traefik:latest
     restart: unless-stopped
     environment:
