@@ -2,7 +2,7 @@ name: time-machine
 
 services:
   app:
-    image: mbentley/timemachine:smb
+    image: docker.io/mbentley/timemachine:smb
     environment:
       TM_USERNAME: ${TM_USERNAME:?err}
       TM_GROUPNAME: ${TM_GROUPNAME:?err}
