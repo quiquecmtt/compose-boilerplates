@@ -31,7 +31,7 @@ services:
       disable: false
     labels:
       traefik.enable: true
-      traefik.http.routers.immich.rule: Host(`photos.monkey-uaru.ts.net`)
+      traefik.http.routers.immich.rule: Host(`photos.$TS_TLD`)
       traefik.http.routers.immich.entrypoints: web-secure
       # traefik.http.routers.immich.middlewares: authentik-fa@file
       traefik.http.routers.immich.tls: true
