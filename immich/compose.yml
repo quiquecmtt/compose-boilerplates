@@ -93,4 +93,5 @@ services:
     restart: always
 
 volumes:
+  pg-data:
   model-cache:
