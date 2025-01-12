@@ -29,6 +29,9 @@ services:
     restart: always
     healthcheck:
       disable: false
+    networks:
+      default:
+      traefik-network:
     labels:
       traefik.enable: true
       traefik.http.routers.immich.rule: Host(`photos.$TS_TLD`)
@@ -91,6 +94,11 @@ services:
       -c shared_buffers=512MB
       -c wal_compression=on
     restart: always
+
+networks:
+  traefik-network:
+    name: traefik-net
+    external: true
 
 volumes:
   pg-data:
