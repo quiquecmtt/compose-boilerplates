@@ -5,8 +5,14 @@ api:
 entryPoints:
   web:
     address: ":80"
+    transport:
+      respondingTimeouts:
+        readTimeout: 0s
   web-secure:
     address: ":443"
+    transport:
+      respondingTimeouts:
+        readTimeout: 0s
 
 serversTransport:
   insecureSkipVerify: true
