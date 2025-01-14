@@ -57,14 +57,14 @@ services:
       redis:
         condition: service_healthy
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.authentik.service=authentik"
-      - "traefik.http.routers.authentik.rule=Host(`auth.${TS_TLD}`)"
-      - "traefik.http.routers.authentik.entrypoints=web-secure"
-      - "traefik.http.routers.authentik.tls=true"
-      - "traefik.http.services.authentik.loadbalancer.server.port=9000"
+      traefik.enable=true
+      traefik.http.routers.authentik.service: authentik
+      traefik.http.routers.authentik.rule: Host(`auth.${TS_TLD}`)
+      traefik.http.routers.authentik.entrypoints: web-secure
+      traefik.http.routers.authentik.tls: true
+      traefik.http.services.authentik.loadbalancer.server.port: 9000
       ## Individual Application forwardAuth regex (catch any subdomain using individual application forwardAuth)  
-      - "traefik.http.routers.authentik-output-rtr.rule=HostRegexp(`{subdomain:[a-z0-9-]+}.${DOMAINNAME}`) && PathPrefix(`/outpost.goauthentik.io/`)"
+      traefik.http.routers.authentik-output-rtr.rule: HostRegexp(`{subdomain:[a-z0-9-]+}.${DOMAINNAME}`) && PathPrefix(`/outpost.goauthentik.io/`)
 
   worker:
     image: ${AUTHENTIK_IMAGE:-ghcr.io/goauthentik/server}:${AUTHENTIK_TAG:-2024.12.2}

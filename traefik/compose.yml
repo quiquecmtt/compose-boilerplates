@@ -92,12 +92,12 @@ services:
     security_opt:
       - no-new-privileges:true
     labels:
-      - traefik.enable=true
-      - traefik.http.routers.traefik.entrypoints=web-secure
-      - traefik.http.routers.traefik.rule=PathPrefix(`/traefik`) || HeaderRegexp(`Referer`,`.*/traefik/.*`)
-      - traefik.http.routers.traefik.middlewares=strip-prefix@file
-      - traefik.http.routers.traefik.tls=true
-      - traefik.http.routers.traefik.service=api@internal
+      traefik.enable: true
+      traefik.http.routers.traefik.entrypoints: web-secure
+      traefik.http.routers.traefik.rule: PathPrefix(`/traefik`) || HeaderRegexp(`Referer`,`.*/traefik/.*`)
+      traefik.http.routers.traefik.middlewares: strip-prefix@file
+      traefik.http.routers.traefik.tls: true
+      traefik.http.routers.traefik.service: api@internal
   error-pages:
     image: ghcr.io/tarampampam/error-pages:3 # using the latest tag is highly discouraged
     environment:
