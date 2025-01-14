@@ -118,6 +118,16 @@ services:
       traefik.http.middlewares.error-pages-middleware.errors.query: /{status}.html
       # define service properties
       traefik.http.services.error-pages-service.loadbalancer.server.port: 8080
+  echo:
+    image: docker.io/ealen/echo-server
+    labels:
+      traefik.enable: true
+      traefik.http.routers.echo.entrypoints: web-secure
+      traefik.http.routers.echo.rule: PathPrefix(`/echo`) || HeaderRegexp(`Referer`,`.*/echo/.*`)
+      traefik.http.routers.echo.middlewares: strip-prefix@file
+      traefik.http.routers.echo.tls: true
+
+
 
 volumes:
   ts-certs:
