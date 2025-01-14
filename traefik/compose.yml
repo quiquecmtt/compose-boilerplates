@@ -114,7 +114,7 @@ services:
       traefik.http.routers.error-pages.tls: true
       # "errors" middleware settings
       traefik.http.middlewares.error-pages.errors.status: 400-599
-      traefik.http.middlewares.error-pages.errors.service: error-pages-service
+      traefik.http.middlewares.error-pages.errors.service: error-pages
       traefik.http.middlewares.error-pages.errors.query: /{status}.html
       # define service properties
       traefik.http.services.error-pages.loadbalancer.server.port: 8080
