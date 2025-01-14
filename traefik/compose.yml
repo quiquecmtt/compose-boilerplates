@@ -15,6 +15,7 @@ x-ts-common: &ts-common
     TS_DEST_IP: ${TRAEFIK_IP:?err}
     TS_USERSPACE: ${TS_USERSPACE:-false}
     TS_TLD: ${TS_TLD:?err}
+    TS_EXTRA_ARGS: --snat-subnet-routes=false
   healthcheck:
     test: tailscale cert --cert-file /ts-certs/$${TS_HOSTNAME}.$${TS_TLD}.crt --key-file /ts-certs/$${TS_HOSTNAME}.$${TS_TLD}.key $${TS_HOSTNAME}.$${TS_TLD}
     interval: 86400s
