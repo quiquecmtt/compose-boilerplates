@@ -72,6 +72,8 @@ services:
     restart: unless-stopped
     environment:
       TS_TLD: monkey-uaru.ts.net
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     ports:
       - 80:80/tcp
       - 80:80/udp
