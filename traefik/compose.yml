@@ -101,7 +101,8 @@ services:
   error-pages:
     image: ghcr.io/tarampampam/error-pages:3 # using the latest tag is highly discouraged
     environment:
-      TEMPLATE_NAME: l7 # set the error pages template
+      TEMPLATE_NAME: ghost # set the error pages template
+      SHOW_DETAILS: true
     labels:
       traefik.enable: true
       # use as "fallback" for any NON-registered services (with priority below normal)
