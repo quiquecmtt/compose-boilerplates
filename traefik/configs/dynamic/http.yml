@@ -12,7 +12,7 @@ http:
           - /portainer
           - /redisinsight
           - /traefik
-          - /echo
+          - /whoami
     authentik-fa:
       forwardAuth:
         address: "http://authentik-server-1:9000/outpost.goauthentik.io/auth/traefik"
