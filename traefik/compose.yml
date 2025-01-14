@@ -126,6 +126,8 @@ services:
       traefik.http.routers.echo.rule: PathPrefix(`/echo`) || HeaderRegexp(`Referer`,`.*/echo/.*`)
       traefik.http.routers.echo.middlewares: strip-prefix@file
       traefik.http.routers.echo.tls: true
+      traefik.http.services.echo.loadbalancer.server.port: 8080
+
 
 
 
