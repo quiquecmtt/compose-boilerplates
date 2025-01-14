@@ -98,6 +98,25 @@ services:
       - traefik.http.routers.traefik.middlewares=strip-prefix@file
       - traefik.http.routers.traefik.tls=true
       - traefik.http.routers.traefik.service=api@internal
+  error-pages:
+    image: ghcr.io/tarampampam/error-pages:3 # using the latest tag is highly discouraged
+    environment:
+      TEMPLATE_NAME: l7 # set the error pages template
+    labels:
+      traefik.enable: true
+      # use as "fallback" for any NON-registered services (with priority below normal)
+      traefik.http.routers.error-pages.rule: HostRegexp(`.+`)
+      traefik.http.routers.error-pages.priority: 10
+      # should say that all of your services work on https
+      traefik.http.routers.error-pages.entrypoints: web-secure
+      traefik.http.routers.error-pages.middlewares: error-pages-middleware
+      traefik.http.routers.error-pages.tls: true
+      # "errors" middleware settings
+      traefik.http.middlewares.error-pages-middleware.errors.status: 400-599
+      traefik.http.middlewares.error-pages-middleware.errors.service: error-pages-service
+      traefik.http.middlewares.error-pages-middleware.errors.query: /{status}.html
+      # define service properties
+      traefik.http.services.error-pages-service.loadbalancer.server.port: 8080
 
 volumes:
   ts-certs:
