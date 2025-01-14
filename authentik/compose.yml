@@ -57,7 +57,7 @@ services:
       redis:
         condition: service_healthy
     labels:
-      traefik.enable=true
+      traefik.enable: true
       traefik.http.routers.authentik.service: authentik
       traefik.http.routers.authentik.rule: Host(`auth.${TS_TLD}`)
       traefik.http.routers.authentik.entrypoints: web-secure
