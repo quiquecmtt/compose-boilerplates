@@ -55,4 +55,5 @@ http:
       middlewares:
         - strip-prefix@file
       service: prometheus@internal
+      tls: true
 
