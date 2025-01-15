@@ -49,7 +49,7 @@ http:
       rule: HostRegexp(`.+`)
       service: noop@internal
     traefik-metrics:
-      rule: Path(`/metrics/traefik`) || HeaderRegexp(`Referer`,`.*/metrics/traefik/.*`)
+      rule: Path(`/metrics/traefik/`) || HeaderRegexp(`Referer`,`.*/metrics/traefik/.*`)
       entrypoints:
         - web-secure
       service: prometheus@internal
