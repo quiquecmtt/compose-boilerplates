@@ -5,6 +5,7 @@ http:
         scheme: https
     strip-prefix:
       stripPrefix:
+        forceSlash: true
         prefixes:
           - /homer
           - /nextcloud
@@ -47,4 +48,11 @@ http:
         - redirect-to-https
       rule: HostRegexp(`.+`)
       service: noop@internal
+    traefik-metrics:
+      rule: PathPrefix(`/metrics/traefik`) || HeaderRegexp(`Referer`,`.*/metrics/traefik/.*`)
+      entrypoints:
+        - web-secure
+      middlewares:
+        - strip-prefix@file
+      service: prometheus@internal
 
