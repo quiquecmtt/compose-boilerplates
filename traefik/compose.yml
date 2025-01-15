@@ -97,8 +97,8 @@ services:
       traefik.enable: true
       traefik.http.routers.traefik.entrypoints: web-secure
       traefik.http.routers.traefik.rule: PathPrefix(`/traefik`) || HeaderRegexp(`Referer`,`.*/traefik/.*`)
-      traefik.http.routers.traefik.middlewares: strip-prefix@file
-      traefik.http.routers.traefik.tls: true
+      # traefik.http.routers.traefik.middlewares: strip-prefix@file
+      # traefik.http.routers.traefik.tls: true
       traefik.http.routers.traefik.service: api@internal
   error-pages:
     image: ghcr.io/tarampampam/error-pages:3 # using the latest tag is highly discouraged
@@ -112,8 +112,8 @@ services:
       traefik.http.routers.error-pages.priority: 10
       # should say that all of your services work on https
       traefik.http.routers.error-pages.entrypoints: web-secure
-      traefik.http.routers.error-pages.middlewares: error-pages
-      traefik.http.routers.error-pages.tls: true
+      # traefik.http.routers.error-pages.middlewares: error-pages
+      # traefik.http.routers.error-pages.tls: true
       # "errors" middleware settings
       traefik.http.middlewares.error-pages.errors.status: 400-599
       traefik.http.middlewares.error-pages.errors.service: error-pages
@@ -126,8 +126,8 @@ services:
       traefik.enable: true
       traefik.http.routers.whoami.entrypoints: web-secure
       traefik.http.routers.whoami.rule: PathPrefix(`/whoami`) || HeaderRegexp(`Referer`,`.*/whoami/.*`)
-      traefik.http.routers.whoami.middlewares: strip-prefix@file
-      traefik.http.routers.whoami.tls: true
+      # traefik.http.routers.whoami.middlewares: strip-prefix@file
+      # traefik.http.routers.whoami.tls: true
       traefik.http.services.whoami.loadbalancer.server.port: 80
 
 

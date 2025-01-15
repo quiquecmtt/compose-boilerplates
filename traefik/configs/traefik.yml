@@ -13,12 +13,18 @@ entryPoints:
     transport:
       respondingTimeouts:
         readTimeout: 0s
+    http:
+      middlewares:
+        - strip-prefix@file
+        - error-pages@docker
+      tls: true
 
 serversTransport:
   insecureSkipVerify: true
 
 metrics:
   prometheus:
+    manualRouting: true
     addEntrypointsLabels: true
     addRoutersLabels: true
     addServicesLabels: true
