@@ -52,8 +52,6 @@ http:
       rule: PathPrefix(`/metrics/traefik`) || HeaderRegexp(`Referer`,`.*/metrics/traefik/.*`)
       entrypoints:
         - web-secure
-      middlewares:
-        - strip-prefix@file
       service: prometheus@internal
       tls: true
 
