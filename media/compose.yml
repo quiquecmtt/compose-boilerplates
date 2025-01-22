@@ -28,7 +28,6 @@ services:
       # traefik.http.routers.jellyfin.tls.options: tls12max@file
       traefik.http.routers.jellyfin.service: jellyfin
       traefik.http.services.jellyfin.loadbalancer.server.port: 8096
-
     extra_hosts:
       - 'host.docker.internal:host-gateway'
 

@@ -1,0 +1,53 @@
+name: portainer
+
+services:
+  portainer:
+    image: docker.io/portainer/portainer-ce:latest
+    restart: unless-stopped
+    volumes:
+      # - /var/run/docker.sock:/var/run/docker.sock
+      - "portainer-data:/data"
+    networks: 
+      traefik-network:
+    labels:
+      traefik.enable: true
+      traefik.http.routers.portainer.entrypoints: web-secure
+      traefik.http.routers.portainer.rule: Host(`home.${TS_TLD}`) && (PathPrefix(`/portainer`) || HeadersRegexp(`Referer`, `.*/portainer/.*`))
+      # traefik.http.routers.portainer.middlewares: authelia@docker,strip-prefix@file
+      traefik.http.routers.portainer.tls: true
+      traefik.http.routers.portainer.service: portainer
+      traefik.http.services.portainer.loadbalancer.server.port: 9000
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+
+
+  agent:
+    image: docker.io/portainer/agent:latest
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/volumes:/var/lib/docker/volumes
+
+  # watchtower:
+  #   container_name: watchtower
+  #   image: containrrr/watchtower
+  #   hostname: watchtower
+  #   restart: unless-stopped
+  #   environment:
+  #     TZ: ${TIMEZONE:-UTC}
+  #     WATCHTOWER_CLEANUP: "true"
+  #     WATCHTOWER_SCHEDULE: "0 0 4 * * *"
+  #     WATCHTOWER_ROLLING_RESTART: "true"
+  #     WATCHTOWER_HTTP_API_TOKEN: ""
+  #     WATCHTOWER_HTTP_API_METRICS: "true"
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
+
+volumes:
+  app-data:
+
+networks:
+  traefik-network:
+    name: traefik-net
+    external: true
