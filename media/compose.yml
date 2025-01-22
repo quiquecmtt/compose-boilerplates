@@ -4,7 +4,7 @@ services:
     image: docker.io/jellyfin/jellyfin:latest
     user: ${JLLFN_UID:-1000}:${JLLFN_GID:-1000}
     group_add:
-      - {RENDER_GID:-1000}
+      - ${RENDER_GID:-1000}
     devices:
       - /dev/dri:/dev/dri
     networks:
