@@ -7,6 +7,7 @@ http:
       stripPrefix:
         forceSlash: true
         prefixes:
+          - /fenrir
           - /homer
           - /nextcloud
           - /pihole
@@ -66,4 +67,15 @@ http:
         - web-secure
       service: prometheus@internal
       tls: true
+    cockpit-fenrir:
+      rule: Host(`home.{{ env "TS_TLD" }}`) && (PathPrefix(`/fenrir`) || HeaderRegexp(`Referer`, `.*/fenrir/.*`))
+      entrypoints:
+        - web-secure
+      service: cockpit-fenrir@file
+
+    services:
+      cockpit-fenrir:
+        loadBalancer:
+          servers:
+            - url: https://host.docker.internal:9090
 
