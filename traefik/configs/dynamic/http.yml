@@ -73,9 +73,9 @@ http:
         - web-secure
       service: cockpit-fenrir
 
-    services:
-      cockpit-fenrir:
-        loadBalancer:
-          servers:
-            - url: https://host.docker.internal:9090
+  services:
+    cockpit-fenrir:
+      loadBalancer:
+        servers:
+          - url: https://host.docker.internal:9090
 
