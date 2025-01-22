@@ -12,7 +12,7 @@ services:
     labels:
       traefik.enable: true
       traefik.http.routers.portainer.entrypoints: web-secure
-      traefik.http.routers.portainer.rule: Host(`home.${TS_TLD}`) && (PathPrefix(`/portainer`) || HeadersRegexp(`Referer`, `.*/portainer/.*`))
+      traefik.http.routers.portainer.rule: Host(`home.${TS_TLD:?err}`) && (PathPrefix(`/portainer`) || HeadersRegexp(`Referer`, `.*/portainer/.*`))
       # traefik.http.routers.portainer.middlewares: authelia@docker,strip-prefix@file
       traefik.http.routers.portainer.tls: true
       traefik.http.routers.portainer.service: portainer
