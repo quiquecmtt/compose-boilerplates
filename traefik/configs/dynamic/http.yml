@@ -33,24 +33,15 @@ http:
 
     jellyfin-headers:
       headers:
-        customRequestHeaders:
-          X-Forwarded-Proto: https
-        accessControlAllowHeaders:
-          - Authorization
-          - Range
-          - Content-Type
-          - X-Emby-Authorization
-          - Accept
-        accessControlAllowMethods:
-          - GET
-          - POST
-          - OPTIONS
-          - DELETE
-        accessControlAllowOrigin: "*"
-        accessControlExposeHeaders:
-          - Content-Range
-          - X-Emby-Authorization
-          - Range
+        customResponseHeaders:
+          X-Robots-Tag: "noindex,nofollow,nosnippet,noarchive,notranslate,noimageindex"
+          X-XSS-PROTECTION: "1"
+        STSSeconds: 315360000
+        STSIncludeSubdomains: true
+        STSPreload: true
+        forceSTSHeader: true
+        frameDeny: true
+        contentTypeNosniff: true
 
     redirect-pihole-admin:
       redirectRegex:
