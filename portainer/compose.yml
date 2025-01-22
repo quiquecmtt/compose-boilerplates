@@ -6,7 +6,7 @@ services:
     restart: unless-stopped
     volumes:
       # - /var/run/docker.sock:/var/run/docker.sock
-      - "portainer-data:/data"
+      - app-data:/data
     networks: 
       traefik-network:
     labels:
@@ -19,7 +19,6 @@ services:
       traefik.http.services.portainer.loadbalancer.server.port: 9000
     extra_hosts:
       - 'host.docker.internal:host-gateway'
-
 
   agent:
     image: docker.io/portainer/agent:latest
