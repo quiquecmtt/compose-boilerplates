@@ -1,7 +1,7 @@
 name: portainer
 
 services:
-  portainer:
+  app:
     image: docker.io/portainer/portainer-ce:latest
     restart: unless-stopped
     volumes:
