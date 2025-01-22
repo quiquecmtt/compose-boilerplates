@@ -1,0 +1,34 @@
+name: torrent
+
+services:
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    environment:
+      PUID: 1000
+      PGID: 1000
+    volumes:
+      - prowlarr-data:/config
+    ports:
+      - 9696:9696
+    restart: unless-stopped
+    networks:
+      default:
+      traefik-network:
+    labels:
+      traefik.enable: true
+      traefik.http.routers.prowlarr.entrypoints: web-secure
+      traefik.http.routers.prowlarr.rule: Host(`home.${TS_TLD:?err}`) && (PathPrefix(`/prowlarr`) || HeaderRegexp(`Referer`, `.*/prowlarr/.*`))
+      # traefik.http.routers.prowlarr.middlewares: authelia@docker,strip-prefix@file
+      traefik.http.routers.prowlarr.tls: true
+      traefik.http.routers.prowlarr.service: prowlarr
+      traefik.http.services.prowlarr.loadbalancer.server.port: 9696
+
+
+
+volumes:
+  prowlarr-data:
+
+networks:
+  traefik-network:
+    name: traefik-net
+    external: true

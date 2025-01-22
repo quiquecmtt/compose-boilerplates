@@ -12,6 +12,7 @@ http:
           - /nextcloud
           - /pihole
           - /portainer
+          - /prowlarr
           - /redisinsight
           - /traefik
           - /whoami
