@@ -10,6 +10,8 @@ services:
     networks:
       default:
       traefik-network:
+    ports:
+      - 8096:8096 # Workaround Swiftfin
     volumes:
       - jellyfin-config:/config
       - jellyfin-cache:/cache
