@@ -67,7 +67,7 @@ services:
     labels:
       traefik.enable: true
       traefik.http.routers.sonarr.entrypoints: web-secure
-      traefik.http.routers.sonarr.rule: Host(`home.${TS_TLD:?err}`) && (PathPrefix(`/sonarr`) || HeaderRegexp(`Referer`, `.*/sonarr/.*`))
+      traefik.http.routers.sonarr.rule: Host(`home.${TS_TLD:?err}`) && PathPrefix(`/sonarr`)
       # traefik.http.routers.sonarr.middlewares: ''
       traefik.http.routers.sonarr.tls: true
       traefik.http.routers.sonarr.service: sonarr
@@ -131,7 +131,7 @@ services:
     labels:
       traefik.enable: true
       traefik.http.routers.transmission.entrypoints: web-secure
-      traefik.http.routers.transmission.rule: Host(`home.${TS_TLD:?err}`) && (PathPrefix(`/transmission`) || HeaderRegexp(`Referer`, `.*/transmission/.*`))
+      traefik.http.routers.transmission.rule: Host(`home.${TS_TLD:?err}`) && (PathPrefix(`/transmission`) )
       # traefik.http.routers.transmission.middlewares: ''
       traefik.http.routers.transmission.tls: true
       traefik.http.routers.transmission.service: transmission
