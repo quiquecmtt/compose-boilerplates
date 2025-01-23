@@ -31,11 +31,8 @@ services:
     volumes:
       - radarr-data:/config
       - type: bind
-        source: ${MEDIA_LOCATION:?err}/Movies
-        target: /movies
-      - type: bind
-        source: ${MEDIA_LOCATION:?err}/Downloads
-        target: /downloads
+        source: ${MEDIA_LOCATION:?err}
+        target: /media
     # ports:
     #   - 7878:7878
     restart: unless-stopped
@@ -59,11 +56,8 @@ services:
     volumes:
       - sonarr-data:/config
       - type: bind
-        source: ${MEDIA_LOCATION:?err}/TV-Series
-        target: /tv
-      - type: bind
-        source: ${MEDIA_LOCATION:?err}/Downloads
-        target: /downloads
+        source: ${MEDIA_LOCATION:?err}
+        target: /media
     # ports:
     #   - 8989:8989
     restart: unless-stopped
@@ -87,11 +81,8 @@ services:
     volumes:
       - readarr-data:/config
       - type: bind
-        source: ${MEDIA_LOCATION:?err}/Books
-        target: /books
-      - type: bind
-        source: ${MEDIA_LOCATION:?err}/Downloads
-        target: /downloads
+        source: ${MEDIA_LOCATION:?err}
+        target: /media
     # ports:
     #   - 8787:8787
     restart: unless-stopped
@@ -127,11 +118,8 @@ services:
     volumes:
       - transmission-data:/config
       - type: bind
-        source: ${MEDIA_LOCATION:?err}/Downloads
-        target: /downloads
-      - type: bind
-        source: ${MEDIA_LOCATION:?err}/Watch
-        target: /watch
+        source: ${MEDIA_LOCATION:?err}
+        target: /media
     ports:
       # - 9091:9091
       - 51413:51413
