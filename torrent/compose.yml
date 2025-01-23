@@ -1,15 +1,15 @@
 name: torrent
 
 services:
-  prowlarr:
+  prowlarr: # Indexer
     image: lscr.io/linuxserver/prowlarr:latest
     environment:
       PUID: 1000
       PGID: 1000
     volumes:
       - prowlarr-data:/config
-    ports:
-      - 9696:9696
+    # ports:
+    #   - 9696:9696
     restart: unless-stopped
     networks:
       default:
@@ -18,15 +18,143 @@ services:
       traefik.enable: true
       traefik.http.routers.prowlarr.entrypoints: web-secure
       traefik.http.routers.prowlarr.rule: Host(`home.${TS_TLD:?err}`) && (PathPrefix(`/prowlarr`) || HeaderRegexp(`Referer`, `.*/prowlarr/.*`))
-      # traefik.http.routers.prowlarr.middlewares: authelia@docker,strip-prefix@file
+      # traefik.http.routers.prowlarr.middlewares: ''
       traefik.http.routers.prowlarr.tls: true
       traefik.http.routers.prowlarr.service: prowlarr
       traefik.http.services.prowlarr.loadbalancer.server.port: 9696
 
+  radarr: # Movies
+    image: lscr.io/linuxserver/radarr:latest
+    environment:
+      PUID: 1000
+      PGID: 1000
+    volumes:
+      - radarr-data:/config
+      - type: bind
+        source: ${MEDIA_LOCATION:?err}/Movies
+        target: /movies
+      - type: bind
+        source: ${MEDIA_LOCATION:?err}/Downloads
+        target: /downloads
+    # ports:
+    #   - 7878:7878
+    restart: unless-stopped
+    networks:
+      default:
+      traefik-network:
+    labels:
+      traefik.enable: true
+      traefik.http.routers.radarr.entrypoints: web-secure
+      traefik.http.routers.radarr.rule: Host(`home.${TS_TLD:?err}`) && (PathPrefix(`/radarr`) || HeaderRegexp(`Referer`, `.*/radarr/.*`))
+      # traefik.http.routers.radarr.middlewares: ''
+      traefik.http.routers.radarr.tls: true
+      traefik.http.routers.radarr.service: radarr
+      traefik.http.services.radarr.loadbalancer.server.port: 7878
 
+  sonarr: # TV Series
+    image: lscr.io/linuxserver/sonarr:latest
+    environment:
+      PUID: 1000
+      PGID: 1000
+    volumes:
+      - sonarr-data:/config
+      - type: bind
+        source: ${MEDIA_LOCATION:?err}/TV-Series
+        target: /tv
+      - type: bind
+        source: ${MEDIA_LOCATION:?err}/Downloads
+        target: /downloads
+    # ports:
+    #   - 8989:8989
+    restart: unless-stopped
+    networks:
+      default:
+      traefik-network:
+    labels:
+      traefik.enable: true
+      traefik.http.routers.sonarr.entrypoints: web-secure
+      traefik.http.routers.sonarr.rule: Host(`home.${TS_TLD:?err}`) && (PathPrefix(`/sonarr`) || HeaderRegexp(`Referer`, `.*/sonarr/.*`))
+      # traefik.http.routers.sonarr.middlewares: ''
+      traefik.http.routers.sonarr.tls: true
+      traefik.http.routers.sonarr.service: sonarr
+      traefik.http.services.sonarr.loadbalancer.server.port: 8989
+
+  readarr:
+    image: lscr.io/linuxserver/readarr:develop
+    environment:
+      PUID: 1000
+      PGID: 1000
+    volumes:
+      - readarr-data:/config
+      - type: bind
+        source: ${MEDIA_LOCATION:?err}/Books
+        target: /books
+      - type: bind
+        source: ${MEDIA_LOCATION:?err}/Downloads
+        target: /downloads
+    # ports:
+    #   - 8787:8787
+    restart: unless-stopped
+    networks:
+      default:
+      traefik-network:
+    labels:
+      traefik.enable: true
+      traefik.http.routers.readarr.entrypoints: web-secure
+      traefik.http.routers.readarr.rule: Host(`home.${TS_TLD:?err}`) && (PathPrefix(`/readarr`) || HeaderRegexp(`Referer`, `.*/readarr/.*`))
+      # traefik.http.routers.readarr.middlewares: ''
+      traefik.http.routers.readarr.tls: true
+      traefik.http.routers.readarr.service: readarr
+      traefik.http.services.readarr.loadbalancer.server.port: 8787
+
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    environment:
+      LOG_LEVEL: info
+    restart: unless-stopped
+
+  transmission:
+    image: lscr.io/linuxserver/transmission:latest
+    environment:
+      PUID: 1000
+      PGID: 1000
+      # TRANSMISSION_WEB_HOME: #optional
+      # USER: #optional
+      # PASS: #optional
+      # WHITELIST: #optional
+      # PEERPORT: #optional
+      # HOST_WHITELIST: #optional
+    volumes:
+      - transmission-data:/config
+      - type: bind
+        source: ${MEDIA_LOCATION:?err}/Downloads
+        target: /downloads
+      - type: bind
+        source: ${MEDIA_LOCATION:?err}/Watch
+        target: /watch
+    ports:
+      # - 9091:9091
+      - 51413:51413
+      - 51413:51413/udp
+    restart: unless-stopped
+    networks:
+      default:
+      traefik-network:
+    labels:
+      traefik.enable: true
+      traefik.http.routers.transmission.entrypoints: web-secure
+      traefik.http.routers.transmission.rule: Host(`home.${TS_TLD:?err}`) && (PathPrefix(`/transmission`) || HeaderRegexp(`Referer`, `.*/transmission/.*`))
+      # traefik.http.routers.transmission.middlewares: ''
+      traefik.http.routers.transmission.tls: true
+      traefik.http.routers.transmission.service: transmission
+      traefik.http.services.transmission.loadbalancer.server.port: 9091
 
 volumes:
   prowlarr-data:
+  radarr-data:
+  sonarr-data:
+  readarr-data:
+  transmission-data: 
 
 networks:
   traefik-network:

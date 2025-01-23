@@ -13,6 +13,9 @@ http:
           - /pihole
           - /portainer
           - /prowlarr
+          - /radarr
+          - /readarr
+          - /sonarr
           - /redisinsight
           - /traefik
           - /whoami
