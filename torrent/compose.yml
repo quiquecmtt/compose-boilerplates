@@ -17,7 +17,7 @@ services:
     labels:
       traefik.enable: true
       traefik.http.routers.prowlarr.entrypoints: web-secure
-      traefik.http.routers.prowlarr.rule: Host(`home.${TS_TLD:?err}`) && (PathPrefix(`/prowlarr`) || HeaderRegexp(`Referer`, `.*/prowlarr/.*`))
+      traefik.http.routers.prowlarr.rule: Host(`home.${TS_TLD:?err}`) && PathPrefix(`/prowlarr`)
       # traefik.http.routers.prowlarr.middlewares: ''
       traefik.http.routers.prowlarr.tls: true
       traefik.http.routers.prowlarr.service: prowlarr
@@ -42,7 +42,7 @@ services:
     labels:
       traefik.enable: true
       traefik.http.routers.radarr.entrypoints: web-secure
-      traefik.http.routers.radarr.rule: Host(`home.${TS_TLD:?err}`) && (PathPrefix(`/radarr`) || HeaderRegexp(`Referer`, `.*/radarr/.*`))
+      traefik.http.routers.radarr.rule: Host(`home.${TS_TLD:?err}`) && PathPrefix(`/radarr`)
       # traefik.http.routers.radarr.middlewares: ''
       traefik.http.routers.radarr.tls: true
       traefik.http.routers.radarr.service: radarr
@@ -92,7 +92,7 @@ services:
     labels:
       traefik.enable: true
       traefik.http.routers.readarr.entrypoints: web-secure
-      traefik.http.routers.readarr.rule: Host(`home.${TS_TLD:?err}`) && (PathPrefix(`/readarr`) || HeaderRegexp(`Referer`, `.*/readarr/.*`))
+      traefik.http.routers.readarr.rule: Host(`home.${TS_TLD:?err}`) && PathPrefix(`/readarr`)
       # traefik.http.routers.readarr.middlewares: ''
       traefik.http.routers.readarr.tls: true
       traefik.http.routers.readarr.service: readarr
