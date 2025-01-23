@@ -9,3 +9,5 @@ fi
 
 mkdir -pv ${MEDIA_LOCATION}/{Books,Downloads,Movies,TV-Series,Watch}
 sudo chown -v -R ${USER}: ${MEDIA_LOCATION}/{Books,Downloads,Movies,TV-Series,Watch}
+
+mkdir -pv ${MEDIA_LOCATION}/Downloads/{radarr,readarr,sonarr}
