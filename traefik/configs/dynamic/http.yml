@@ -12,10 +12,10 @@ http:
           - /nextcloud
           - /pihole
           - /portainer
-          - /prowlarr
-          - /radarr
-          - /readarr
-          - /sonarr
+          # - /prowlarr
+          # - /radarr
+          # - /readarr
+          # - /sonarr
           - /redisinsight
           - /traefik
           - /whoami
