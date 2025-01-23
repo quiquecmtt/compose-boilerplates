@@ -131,7 +131,7 @@ services:
     labels:
       traefik.enable: true
       traefik.http.routers.transmission.entrypoints: web-secure
-      traefik.http.routers.transmission.rule: Host(`home.${TS_TLD:?err}`) && (PathPrefix(`/transmission`) || HeadersRegexp(`Referer`, `.*/transmission/.*`))
+      traefik.http.routers.transmission.rule: Host(`home.${TS_TLD:?err}`) && (PathPrefix(`/transmission`) || HeaderRegexp(`Referer`, `.*/transmission/.*`))
       # traefik.http.routers.transmission.middlewares: ''
       traefik.http.routers.transmission.tls: true
       traefik.http.routers.transmission.service: transmission
