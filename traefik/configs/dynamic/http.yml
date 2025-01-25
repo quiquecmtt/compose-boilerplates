@@ -16,6 +16,7 @@ http:
           # - /radarr
           # - /readarr
           # - /sonarr
+          - /speedtest
           - /redisinsight
           - /traefik
           - /whoami
