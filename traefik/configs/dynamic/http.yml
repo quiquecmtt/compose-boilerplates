@@ -1,9 +1,5 @@
 http:
   middlewares:
-    maxRequest-fix:
-      limit:
-        buffering:
-          maxRequestBodyBytes: 10000000000
     redirect-to-https:
       redirectScheme:
         scheme: https
