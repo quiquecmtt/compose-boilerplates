@@ -137,7 +137,7 @@ services:
       traefik.enable: true
       traefik.http.routers.speedtest.entrypoints: web-secure
       traefik.http.routers.speedtest.rule: PathPrefix(`/speedtest`) || HeaderRegexp(`Referer`,`.*/speedtest/.*`)
-      # traefik.http.routers.speedtest.middlewares: strip-prefix@file
+      traefik.http.routers.speedtest.middlewares: maxRequest-fix@file
       # traefik.http.routers.speedtest.tls: true
       traefik.http.services.speedtest.loadbalancer.server.port: 3000
 
