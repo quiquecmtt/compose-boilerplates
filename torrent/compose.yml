@@ -134,7 +134,7 @@ services:
       traefik.http.routers.transmission.entrypoints: web-secure
       traefik.http.routers.transmission.rule: Host(`home.${TS_TLD:?err}`) && (PathPrefix(`/transmission`) || HeaderRegexp(`Referer`, `.*/transmission/.*`))
       traefik.http.middlewares.transmission-cors.headers.accessControlAllowHeaders: X-Transmission-Session-Id
-      traefik.http.middlewares.transmission-cors.headers.accessControlAllowOrigin: '*'
+      traefik.http.middlewares.transmission-cors.headers.accessControlAllowOriginList: '*'
       traefik.http.middlewares.transmission-cors.headers.accessControlExposeHeaders: X-Transmission-Session-Id
       traefik.http.routers.transmission.middlewares: transmission-cors
       traefik.http.routers.transmission.tls: true
