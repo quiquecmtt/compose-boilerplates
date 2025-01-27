@@ -134,7 +134,7 @@ services:
       traefik.http.routers.transmission.entrypoints: web-secure
       traefik.http.routers.transmission.rule: Host(`home.${TS_TLD:?err}`) && (PathPrefix(`/transmission`) || HeaderRegexp(`Referer`, `.*/transmission/.*`))
       traefik.http.routers.transmission.middlewares: 'transmission-headers@docker'
-      traefik.http.middlewares.transmission-headers.headers.customRequestHeaders.X-Transmission-Session-Id: '{X-Transmission-Session-Id}'
+      traefik.http.middlewares.transmission-headers.headers.customResponseHeaders.X-Transmission-Session-Id: keep
       traefik.http.routers.transmission.tls: true
       traefik.http.routers.transmission.service: transmission
       traefik.http.services.transmission.loadbalancer.server.port: 9091
