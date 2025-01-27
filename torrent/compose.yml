@@ -136,7 +136,8 @@ services:
       traefik.http.middlewares.transmission-cors.headers.accessControlAllowHeaders: X-Transmission-Session-Id
       traefik.http.middlewares.transmission-cors.headers.accessControlAllowOriginList: '*'
       traefik.http.middlewares.transmission-cors.headers.accessControlExposeHeaders: X-Transmission-Session-Id
-      traefik.http.routers.transmission.middlewares: transmission-cors
+      traefik.http.middlewares.transmission-headers.headers.customResponseHeaders.X-Transmission-Session-Id: X-Transmission-Session-Id
+      traefik.http.routers.transmission.middlewares: transmission-headers,transmission-cors
       traefik.http.routers.transmission.tls: true
       traefik.http.routers.transmission.service: transmission
       traefik.http.services.transmission.loadbalancer.server.port: 9091
