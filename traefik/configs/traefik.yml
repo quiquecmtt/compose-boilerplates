@@ -16,7 +16,7 @@ entryPoints:
     http:
       middlewares:
         - strip-prefix@file
-        - error-pages@docker
+        # - error-pages@docker
       tls: true
 
 serversTransport:
