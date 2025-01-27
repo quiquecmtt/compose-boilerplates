@@ -128,15 +128,15 @@ services:
     networks:
       default:
       traefik-network:
-    # labels:
-    #   traefik.enable: true
-    #   traefik.passHostHeader: true
-    #   traefik.http.routers.transmission.entrypoints: web-secure
-    #   traefik.http.routers.transmission.rule: Host(`home.${TS_TLD:?err}`) && (PathPrefix(`/transmission`) || HeaderRegexp(`Referer`, `.*/transmission/.*`))
-    #   # traefik.http.routers.transmission.middlewares: ''
-    #   traefik.http.routers.transmission.tls: true
-    #   traefik.http.routers.transmission.service: transmission
-    #   traefik.http.services.transmission.loadbalancer.server.port: 9091
+    labels:
+      traefik.enable: true
+      traefik.passHostHeader: true
+      traefik.http.routers.transmission.entrypoints: web-secure
+      traefik.http.routers.transmission.rule: Host(`home.${TS_TLD:?err}`) && (PathPrefix(`/transmission`) || HeaderRegexp(`Referer`, `.*/transmission/.*`))
+      # traefik.http.routers.transmission.middlewares: ''
+      traefik.http.routers.transmission.tls: true
+      traefik.http.routers.transmission.service: transmission
+      traefik.http.services.transmission.loadbalancer.server.port: 9091
 
 volumes:
   prowlarr-data:
