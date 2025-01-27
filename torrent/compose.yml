@@ -121,7 +121,7 @@ services:
         source: ${MEDIA_LOCATION:?err}
         target: /media
     ports:
-      - 127.0.0.1:9091:9091
+      - 9091:9091
       - 51413:51413
       - 51413:51413/udp
     restart: unless-stopped
