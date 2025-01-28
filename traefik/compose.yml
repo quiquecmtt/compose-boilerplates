@@ -97,6 +97,7 @@ services:
       traefik.enable: true
       traefik.http.routers.traefik.entrypoints: web-secure
       traefik.http.routers.traefik.rule: PathPrefix(`/traefik`) || HeaderRegexp(`Referer`,`.*/traefik/.*`)
+      traefik.http.routers.traefik.middlewares: 'authentik-fa@file'
       # traefik.http.routers.traefik.middlewares: strip-prefix@file
       # traefik.http.routers.traefik.tls: true
       traefik.http.routers.traefik.service: api@internal
