@@ -8,6 +8,7 @@ services:
       PGID: 1000
     volumes:
       - prowlarr-data:/config
+      - ${MEDIA_LOCATION:?err}/Backups/prowlarr:/media/Backups/prowlarr
     # ports:
     #   - 9696:9696
     restart: unless-stopped
