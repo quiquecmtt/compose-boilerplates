@@ -19,7 +19,7 @@ services:
       traefik.enable: true
       traefik.http.routers.prowlarr.entrypoints: web-secure
       traefik.http.routers.prowlarr.rule: Host(`home.${TS_TLD:?err}`) && PathPrefix(`/prowlarr`)
-      # traefik.http.routers.prowlarr.middlewares: ''
+      traefik.http.routers.prowlarr.middlewares: 'authentik-fa@file'
       traefik.http.routers.prowlarr.tls: true
       traefik.http.routers.prowlarr.service: prowlarr
       traefik.http.services.prowlarr.loadbalancer.server.port: 9696
@@ -44,7 +44,7 @@ services:
       traefik.enable: true
       traefik.http.routers.radarr.entrypoints: web-secure
       traefik.http.routers.radarr.rule: Host(`home.${TS_TLD:?err}`) && PathPrefix(`/radarr`)
-      # traefik.http.routers.radarr.middlewares: ''
+      traefik.http.routers.radarr.middlewares: 'authentik-fa@file'
       traefik.http.routers.radarr.tls: true
       traefik.http.routers.radarr.service: radarr
       traefik.http.services.radarr.loadbalancer.server.port: 7878
@@ -69,7 +69,7 @@ services:
       traefik.enable: true
       traefik.http.routers.sonarr.entrypoints: web-secure
       traefik.http.routers.sonarr.rule: Host(`home.${TS_TLD:?err}`) && PathPrefix(`/sonarr`)
-      # traefik.http.routers.sonarr.middlewares: ''
+      traefik.http.routers.sonarr.middlewares: 'authentik-fa@file'
       traefik.http.routers.sonarr.tls: true
       traefik.http.routers.sonarr.service: sonarr
       traefik.http.services.sonarr.loadbalancer.server.port: 8989
@@ -94,7 +94,7 @@ services:
       traefik.enable: true
       traefik.http.routers.readarr.entrypoints: web-secure
       traefik.http.routers.readarr.rule: Host(`home.${TS_TLD:?err}`) && PathPrefix(`/readarr`)
-      # traefik.http.routers.readarr.middlewares: ''
+      traefik.http.routers.readarr.middlewares: 'authentik-fa@file'
       traefik.http.routers.readarr.tls: true
       traefik.http.routers.readarr.service: readarr
       traefik.http.services.readarr.loadbalancer.server.port: 8787
@@ -134,6 +134,7 @@ services:
       traefik.passHostHeader: true
       traefik.http.routers.transmission.entrypoints: web-secure
       traefik.http.routers.transmission.rule: Host(`home.${TS_TLD:?err}`) && (PathPrefix(`/transmission`) || HeaderRegexp(`Referer`, `.*/transmission/.*`))
+      traefik.http.routers.transmission.middlewares: 'authentik-fa@file'
       traefik.http.routers.transmission.tls: true
       traefik.http.routers.transmission.service: transmission
       traefik.http.services.transmission.loadbalancer.server.port: 9091
