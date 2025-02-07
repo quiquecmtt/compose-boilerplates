@@ -52,18 +52,6 @@ http:
         regex: /transmission/
         replacement: /transmission/web/
     
-    jellyseerr-rewrite-response:
-      plugin:
-        plugin-rewritebody:
-          rewrites:
-            - regex: '("path":\s*")/'
-              replacement: '${1}/jellyseerr/'
-            - regex: 'href="/'
-              replacement: 'href="/jellyseerr/'
-            - regex: 'src="/'
-              replacement: 'src="/jellyseerr/'
-
-
   routers:
     redirect-to-https:
       entrypoints:
