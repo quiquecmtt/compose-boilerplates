@@ -159,11 +159,11 @@ services:
       traefik.http.routers.jellyseerr.rule: Host(`home.${TS_TLD:?err}`) && (PathPrefix(`/jellyseerr`) || HeaderRegexp(`Referer`, `.*/jellyseerr/.*`) || Header(`X-Traefik-Service`,`jellyseerr`))
       traefik.http.routers.jellyseerr.middlewares: 'authentik-fa@file,jellyseerr-headers'
       traefik.http.middlewares.jellyseerr-headers.headers.customResponseHeaders.X-Traefik-Service: jellyseerr
+      traefik.http.middlewares.jellyseerr-headers.headers.customResponseHeaders.Access-Control-Expose-Headers: X-Traefik-Service
+      traefik.http.middlewares.jellyseerr-headers.headers.customResponseHeaders.Access-Control-Allow-Origin: *
       traefik.http.routers.jellyseerr.tls: true
       traefik.http.routers.jellyseerr.service: jellyseerr
       traefik.http.services.jellyseerr.loadbalancer.server.port: 5055
-  
-
 
 volumes:
   prowlarr-data:
