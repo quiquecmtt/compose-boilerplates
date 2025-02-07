@@ -138,6 +138,31 @@ services:
       traefik.http.routers.transmission.tls: true
       traefik.http.routers.transmission.service: transmission
       traefik.http.services.transmission.loadbalancer.server.port: 9091
+  
+  jellyseerr: 
+    image: fallenbagel/jellyseerr:latest 
+    hostname: jellyseerr 
+    networks: 
+      default:
+      traefik-network:
+    # ports: 
+    #   - 5055:5055 
+    volumes: 
+      - jellyseerr-data:/app/config 
+    restart: unless-stopped 
+    depends_on: 
+      - sonarr 
+      - radarr 
+    labels:
+      traefik.enable: true
+      traefik.http.routers.jellyseerr.entrypoints: web-secure
+      traefik.http.routers.jellyseerr.rule: Host(`home.${TS_TLD:?err}`) && (PathPrefix(`/jellyseerr`) || HeaderRegexp(`Referer`, `.*/jellyseerr/.*`))
+      traefik.http.routers.jellyseerr.middlewares: 'authentik-fa@file'
+      traefik.http.routers.jellyseerr.tls: true
+      traefik.http.routers.jellyseerr.service: jellyseerr
+      traefik.http.services.jellyseerr.loadbalancer.server.port: 5055
+  
+
 
 volumes:
   prowlarr-data:
@@ -145,6 +170,7 @@ volumes:
   sonarr-data:
   readarr-data:
   transmission-data: 
+  jellyseerr-data:
 
 networks:
   traefik-network:
