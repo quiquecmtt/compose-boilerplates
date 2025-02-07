@@ -13,6 +13,7 @@ http:
           - /redisinsight
           - /traefik
           - /whoami
+
     authentik-fa:
       forwardAuth:
         address: "http://authentik-server-1:9000/outpost.goauthentik.io/auth/traefik"
@@ -50,6 +51,18 @@ http:
       redirectRegex:
         regex: /transmission/
         replacement: /transmission/web/
+    
+    jellyseerr-rewrite-response:
+      plugin:
+        replaceBody:
+          rewrites:
+            - regex: '("path":\s*")/'
+              replacement: '${1}/jellyseerr/'
+            - regex: 'href="/'
+              replacement: 'href="/jellyseerr/'
+            - regex: 'src="/'
+              replacement: 'src="/jellyseerr/'
+
 
   routers:
     redirect-to-https:
