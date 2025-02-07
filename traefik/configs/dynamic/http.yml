@@ -7,15 +7,8 @@ http:
       stripPrefix:
         forceSlash: true
         prefixes:
-          - /fenrir
-          - /homer
-          - /nextcloud
-          - /pihole
+          - /jellyseerr
           - /portainer
-          # - /prowlarr
-          # - /radarr
-          # - /readarr
-          # - /sonarr
           - /speedtest
           - /redisinsight
           - /traefik
