@@ -159,7 +159,8 @@ services:
       traefik.http.routers.jellyseerr.rule: Host(`home.${TS_TLD:?err}`) && (PathPrefix(`/jellyseerr`) || HeaderRegexp(`Referer`, `.*/jellyseerr/.*`) || Header(`X-Traefik-Service`,`jellyseerr`))
       traefik.http.routers.jellyseerr.middlewares: 'authentik-fa@file,jellyseerr-redirect'
       traefik.http.middlewares.jellyseerr-redirect.redirectregex.regex: "^https?://([^/]+)/(.*)$"
-      traefik.http.middlewares.jellyseerr-redirect.redirectregex.replacement: "https://$1/jellyseer/$2"
+      
+      traefik.http.middlewares.jellyseerr-redirect.redirectregex.replacement: "https://$1/jellyseer/$1"
       traefik.http.middlewares.jellyseerr-redirect.redirectregex.permanent: "true"
       traefik.http.routers.jellyseerr.tls: true
       traefik.http.routers.jellyseerr.service: jellyseerr
