@@ -54,7 +54,7 @@ http:
     
     jellyseerr-rewrite-response:
       plugin:
-        replaceBody:
+        plugin-rewritebody:
           rewrites:
             - regex: '("path":\s*")/'
               replacement: '${1}/jellyseerr/'
