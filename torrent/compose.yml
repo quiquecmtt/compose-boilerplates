@@ -145,7 +145,6 @@ volumes:
   sonarr-data:
   readarr-data:
   transmission-data: 
-  jellyseerr-data:
 
 networks:
   traefik-network:
