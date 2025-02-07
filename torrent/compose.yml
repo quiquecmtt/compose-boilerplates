@@ -157,7 +157,7 @@ services:
       traefik.enable: true
       traefik.http.routers.jellyseerr.entrypoints: web-secure
       traefik.http.routers.jellyseerr.rule: Host(`home.${TS_TLD:?err}`) && (PathPrefix(`/jellyseerr`) || HeaderRegexp(`Referer`, `.*/jellyseerr/.*`))
-      traefik.http.routers.jellyseerr.middlewares: 'authentik-fa@file,jellyseerr-rewrite-response'
+      traefik.http.routers.jellyseerr.middlewares: 'authentik-fa@file,jellyseerr-rewrite-response@file'
       traefik.http.middlewares.jellyseerr-add-prefix.addprefix.prefix: /jellyseerr
       traefik.http.routers.jellyseerr.tls: true
       traefik.http.routers.jellyseerr.service: jellyseerr
