@@ -14,6 +14,9 @@ services:
     # ports:
     #   - 6767:6767
     restart: unless-stopped
+    networks:
+      default:
+      traefik-network:
     labels:
       traefik.enable: true
       traefik.http.routers.bazarr.entrypoints: web-secure
