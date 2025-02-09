@@ -21,7 +21,7 @@ services:
       traefik.http.routers.bazarr.middlewares: "authentik-fa@file"
       traefik.http.routers.bazarr.tls: true
       traefik.http.routers.bazarr.service: bazarr
-      traefik.http.services.bazarr.loadbalancer.server.port: 8989
+      traefik.http.services.bazarr.loadbalancer.server.port: 6767
 
   flaresolverr:
     image: ghcr.io/flaresolverr/flaresolverr:latest
