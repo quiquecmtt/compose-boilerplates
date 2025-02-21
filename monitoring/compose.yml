@@ -1,0 +1,71 @@
+services:
+  cadvisor: 
+    image: gcr.io/cadvisor/cadvisor:latest
+    privileged: true
+    command:
+      - --url_base_prefix=/metrics/containers/
+    profiles:
+      - exporters
+    # ports:
+    #   - 8080:8080
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    restart: unless-stopped
+    networks:
+      default:
+      traefik-network:
+    labels:
+      traefik.enable: true
+      traefik.http.routers.cadvisor.entrypoints: web-secure
+      traefik.http.routers.cadvisor.rule: Host(`${HOSTNAME:?err}.${TS_TLD:?err}`) && PathPrefix(`/metrics/containers`)
+      # traefik.http.routers.cadvisor.middlewares: "authentik-fa@file"
+      traefik.http.routers.cadvisor.tls: true
+      traefik.http.routers.cadvisor.service: cadvisor
+      traefik.http.services.cadvisor.loadbalancer.server.port: 8080
+  grafana:
+    image: docker.io/grafana/grafana:latest 
+    profiles:
+      - servers
+    restart: unless-stopped
+  loki:
+    image: docker.io/grafana/loki:latest
+    profiles:
+      - servers
+    restart: unless-stopped
+  mimir:
+    image: docker.io/grafana/mimir:latest
+    profiles:
+      - servers
+    restart: unless-stopped
+  node-exporter:
+    image: docker.io/prom/node-exporter:latest
+    network_mode: host
+    pid: host
+    command:
+      - --path.rootfs=/host
+      - --web.telemetry-path="/metrics/node"
+    profiles:
+      - exporters
+    restart: unless-stopped
+    labels:
+      traefik.enable: true
+      traefik.http.routers.node-metrics.entrypoints: web-secure
+      traefik.http.routers.node-metrics.rule: Host(`${HOSTNAME:?err}.${TS_TLD:?err}`) && PathPrefix(`/metrics/node`)
+      # traefik.http.routers.node-metrics.middlewares: "authentik-fa@file"
+      traefik.http.routers.node-metrics.tls: true
+      traefik.http.routers.node-metrics.service: node-metrics
+      traefik.http.services.node-metrics.loadbalancer.server.port: 9100
+  prometheus:
+    image: docker.io/prom/prometheus:latest
+    profiles:
+      - servers
+    restart: unless-stopped
+
+networks:
+  traefik-network:
+    name: traefik-net
+    external: true
