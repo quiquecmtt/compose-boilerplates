@@ -31,8 +31,8 @@ services:
       TS_SOCKET: /ts-sockets/tailscaled-auth.sock
       TS_HOSTNAME: auth
     volumes:
-      - ts-sockets:/ts-sockets 
-      - ts-certs:/ts-certs 
+      - ts-sockets:/ts-sockets
+      - ts-certs:/ts-certs
       - ts-state-auth:/var/lib/tailscale
   ts-home:
     <<: *ts-common
@@ -42,9 +42,20 @@ services:
       TS_SOCKET: /ts-sockets/tailscaled-home.sock
       TS_HOSTNAME: home
     volumes:
-      - ts-sockets:/ts-sockets 
-      - ts-certs:/ts-certs 
+      - ts-sockets:/ts-sockets
+      - ts-certs:/ts-certs
       - ts-state-home:/var/lib/tailscale
+  ts-monitoring:
+    <<: *ts-common
+    hostname: monitoring
+    environment:
+      <<: *ts-common-env
+      TS_SOCKET: /ts-sockets/tailscaled-home.sock
+      TS_HOSTNAME: monitoring
+    volumes:
+      - ts-sockets:/ts-sockets
+      - ts-certs:/ts-certs
+      - ts-state-monitoring:/var/lib/tailscale
   ts-photos:
     <<: *ts-common
     hostname: photos
@@ -53,8 +64,8 @@ services:
       TS_SOCKET: /ts-sockets/tailscaled-photos.sock
       TS_HOSTNAME: photos
     volumes:
-      - ts-sockets:/ts-sockets 
-      - ts-certs:/ts-certs 
+      - ts-sockets:/ts-sockets
+      - ts-certs:/ts-certs
       - ts-state-photos:/var/lib/tailscale
   ts-play:
     <<: *ts-common
@@ -64,8 +75,8 @@ services:
       TS_SOCKET: /ts-sockets/tailscaled-play.sock
       TS_HOSTNAME: play
     volumes:
-      - ts-sockets:/ts-sockets 
-      - ts-certs:/ts-certs 
+      - ts-sockets:/ts-sockets
+      - ts-certs:/ts-certs
       - ts-state-play:/var/lib/tailscale
   proxy:
     image: docker.io/traefik:latest
@@ -85,7 +96,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - ts-certs:/ts-certs
       - ts-sockets:/ts-sockets
-    healthcheck: 
+    healthcheck:
       test: touch /dynamic/auto_reload.yml
       interval: 86400s
       timeout: 300s
@@ -97,7 +108,7 @@ services:
       traefik.enable: true
       traefik.http.routers.traefik.entrypoints: web-secure
       traefik.http.routers.traefik.rule: PathPrefix(`/traefik`) || HeaderRegexp(`Referer`,`.*/traefik/.*`)
-      traefik.http.routers.traefik.middlewares: 'authentik-fa@file'
+      traefik.http.routers.traefik.middlewares: "authentik-fa@file"
       # traefik.http.routers.traefik.middlewares: strip-prefix@file
       # traefik.http.routers.traefik.tls: true
       traefik.http.routers.traefik.service: api@internal
@@ -148,9 +159,11 @@ volumes:
   ts-sockets:
   ts-state-auth:
   ts-state-home:
+  ts-state-monitoring:
   ts-state-play:
   ts-state-photos:
 
 networks:
   default:
     name: traefik-net
+

@@ -34,7 +34,20 @@ services:
     image: docker.io/grafana/grafana:latest
     profiles:
       - servers
+    environment:
+      GF_SERVER_ROOT_URL: "%(protocol)s://%(domain)s:%(http_port)s/grafana/"
+      GF_SERVER_SERVE_FROM_SUB_PATH: "true"
+    volumes:
+      - grafana-data:/var/lib/grafana
     restart: unless-stopped
+    labels:
+      traefik.enable: true
+      traefik.http.routers.grafana.entrypoints: web-secure
+      traefik.http.routers.grafana.rule: Host(`monitoring.${TS_TLD:?err}`) && PathPrefix(`/grafana`)
+      # traefik.http.routers.grafana.middlewares: "authentik-fa@file"
+      traefik.http.routers.grafana.tls: true
+      traefik.http.routers.grafana.service: grafana
+      traefik.http.services.grafana.loadbalancer.server.port: 3000
   loki:
     image: docker.io/grafana/loki:latest
     profiles:
@@ -73,3 +86,6 @@ networks:
   traefik-network:
     name: traefik-net
     external: true
+
+volumes:
+  grafana-data:
