@@ -1,9 +1,10 @@
 services:
-  cadvisor: 
+  cadvisor:
     image: gcr.io/cadvisor/cadvisor:latest
     privileged: true
     command:
       - --prometheus_endpoint=/metrics/containers/
+      - --whitelisted_container_labels=com.docker.compose.project,com.docker.compose.service
     profiles:
       - exporters
     # ports:
@@ -29,7 +30,7 @@ services:
       traefik.http.routers.cadvisor.service: cadvisor
       traefik.http.services.cadvisor.loadbalancer.server.port: 8080
   grafana:
-    image: docker.io/grafana/grafana:latest 
+    image: docker.io/grafana/grafana:latest
     profiles:
       - servers
     restart: unless-stopped
