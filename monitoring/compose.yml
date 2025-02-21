@@ -47,6 +47,7 @@ services:
     pid: host
     command:
       - --path.rootfs=/host
+      - --web.telemetry-path=/metrics/node
     profiles:
       - exporters
     restart: unless-stopped
