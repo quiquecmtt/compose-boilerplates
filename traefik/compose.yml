@@ -50,7 +50,7 @@ services:
     hostname: monitoring
     environment:
       <<: *ts-common-env
-      TS_SOCKET: /ts-sockets/tailscaled-home.sock
+      TS_SOCKET: /ts-sockets/tailscaled-monitoring.sock
       TS_HOSTNAME: monitoring
     volumes:
       - ts-sockets:/ts-sockets
