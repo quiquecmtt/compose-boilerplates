@@ -19,6 +19,8 @@ services:
     networks:
       default:
       traefik-network:
+    volumes:
+      - app-settings:/etc/searxng:rw
     environment:
       SEARXNG_URL: https://search.${TS_TLD:?err}/
       SEARXNG_SECRET: ${SEARXNG_SECRET:?err}
@@ -47,4 +49,5 @@ networks:
     external: true
 
 volumes:
+  app-settings:
   valkey-data:
