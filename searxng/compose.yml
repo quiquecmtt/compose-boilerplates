@@ -32,6 +32,14 @@ services:
       - CHOWN
       - SETGID
       - SETUID
+    labels:
+      traefik.enable: true
+      traefik.http.routers.searxng.rule: Host(`search.${TS_TLD:?err}`)
+      traefik.http.routers.searxng.entrypoints: web-secure
+      # traefik.http.routers.searxng.middlewares: ""
+      traefik.http.routers.searxng.tls: true
+      traefik.http.routers.searxng.service: searxng
+      traefik.http.services.searxng.loadbalancer.server.port: 8888
 
 networks:
   searxng:
