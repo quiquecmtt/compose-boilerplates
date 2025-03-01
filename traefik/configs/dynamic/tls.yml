@@ -15,3 +15,5 @@ tls:
       keyFile: '/ts-certs/photos.{{ env "TS_TLD" }}.key'
     - certFile: '/ts-certs/play.{{ env "TS_TLD" }}.crt'
       keyFile: '/ts-certs/play.{{ env "TS_TLD" }}.key'
+    - certFile: '/ts-certs/search.{{ env "TS_TLD" }}.crt'
+      keyFile: '/ts-certs/search.{{ env "TS_TLD" }}.key'
