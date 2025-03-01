@@ -89,8 +89,8 @@ volumes:
   ts-state-auth:
   ts-state-home:
   ts-state-monitoring:
-  ts-state-play:
   ts-state-photos:
+  ts-state-play:
 
 networks:
   default:
