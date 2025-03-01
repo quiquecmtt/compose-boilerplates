@@ -15,6 +15,3 @@ tls:
       keyFile: '/ts-certs/play.{{ env "TS_TLD" }}.key'
     - certFile: '/ts-certs/photos.{{ env "TS_TLD" }}.crt'
       keyFile: '/ts-certs/photos.{{ env "TS_TLD" }}.key'
-  options:
-    tls12max:
-      maxVersion: VersionTLS12
