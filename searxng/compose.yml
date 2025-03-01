@@ -42,7 +42,9 @@ services:
       traefik.http.services.searxng.loadbalancer.server.port: 8888
 
 networks:
-  searxng:
+  traefik-network:
+    name: traefik-net
+    external: true
 
 volumes:
   valkey-data:
