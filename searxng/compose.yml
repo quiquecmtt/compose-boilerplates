@@ -39,7 +39,7 @@ services:
       # traefik.http.routers.searxng.middlewares: ""
       traefik.http.routers.searxng.tls: true
       traefik.http.routers.searxng.service: searxng
-      traefik.http.services.searxng.loadbalancer.server.port: 8888
+      traefik.http.services.searxng.loadbalancer.server.port: 8080
 
 networks:
   traefik-network:
