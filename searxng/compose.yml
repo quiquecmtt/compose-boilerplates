@@ -1,0 +1,40 @@
+name: searxng
+
+services:
+  valkey:
+    image: docker.io/valkey/valkey:8-alpine
+    restart: unless-stopped
+    volumes:
+      - valkey-data:/data
+    cap_drop:
+      - ALL
+    cap_add:
+      - SETGID
+      - SETUID
+      - DAC_OVERRIDE
+
+  app:
+    image: docker.io/searxng/searxng:latest
+    restart: unless-stopped
+    networks:
+      default:
+      traefik-network:
+    environment:
+      SEARXNG_URL: https://search.${TS_TLD:?err}/
+      SEARXNG_SECRET: ${SEARXNG_SECRET:?err}
+      SEARXNG_IMAGE_PROXY: true
+      SEARXNG_REDIS_URL: redis://searxng-valkey-1
+      UWSGI_WORKERS: ${SEARXNG_UWSGI_WORKERS:-4}
+      UWSGI_THREADS: ${SEARXNG_UWSGI_THREADS:-4}
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - SETGID
+      - SETUID
+
+networks:
+  searxng:
+
+volumes:
+  valkey-data:

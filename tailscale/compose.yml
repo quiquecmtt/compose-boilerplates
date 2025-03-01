@@ -80,6 +80,17 @@ services:
       - ts-sockets:/ts-sockets
       - ts-certs:/ts-certs
       - ts-state-play:/var/lib/tailscale
+  search:
+    <<: *ts-common
+    hostname: search
+    environment:
+      <<: *ts-common-env
+      TS_SOCKET: /ts-sockets/tailscaled-search.sock
+      TS_HOSTNAME: search
+    volumes:
+      - ts-sockets:/ts-sockets
+      - ts-certs:/ts-certs
+      - ts-state-search:/var/lib/tailscale
 
 volumes:
   ts-certs:
@@ -91,6 +102,7 @@ volumes:
   ts-state-monitoring:
   ts-state-photos:
   ts-state-play:
+  ts-state-search:
 
 networks:
   default:
