@@ -82,7 +82,7 @@ services:
     image: docker.io/traefik:latest
     restart: unless-stopped
     environment:
-      TS_TLD: monkey-uaru.ts.net
+      TS_TLD: ${TS_TLD:?err}
     extra_hosts:
       - "host.docker.internal:host-gateway"
     ports:
