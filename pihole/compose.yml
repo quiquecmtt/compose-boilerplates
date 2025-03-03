@@ -11,6 +11,9 @@ services:
       WEBPASSWORD: ${PIHOLEPASS:?err}
       DNS1: ${PIHOLEDNS1:-1.1.1.1}
       DNS2: ${PIHOLEDNS2:-8.8.8.8}
+    networks:
+      default:
+      traefik-network:
     ports:
       - "53:53/tcp"
       - "53:53/udp"
@@ -32,3 +35,8 @@ services:
 volumes:
   pihole-data:
   pihole-dnsmasqd:
+
+networks:
+  traefik-network:
+    name: traefik-net
+    external: true
