@@ -3,6 +3,12 @@ http:
     redirect-to-https:
       redirectScheme:
         scheme: https
+
+      redirect-pihole-admin:
+        redirectRegex:
+          regex: /pihole/$$
+          replacement: /pihole/admin/
+
     strip-prefix:
       stripPrefix:
         forceSlash: true
