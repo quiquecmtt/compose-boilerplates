@@ -7,7 +7,7 @@ http:
       stripPrefix:
         forceSlash: true
         prefixes:
-          - /jellyseerr
+          - /pihole
           - /portainer
           - /speedtest
           - /redisinsight
@@ -51,7 +51,7 @@ http:
       redirectRegex:
         regex: /transmission/
         replacement: /transmission/web/
-    
+
   routers:
     redirect-to-https:
       entrypoints:
