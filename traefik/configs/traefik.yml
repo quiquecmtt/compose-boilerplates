@@ -19,8 +19,11 @@ entryPoints:
         # - error-pages@docker
       tls: true
 
-serversTransport:
-  insecureSkipVerify: true
+experimental:
+  plugins:
+    rewriteHeaders:
+      modulename: "github.com/vincentinttsh/rewriteheaders"
+      version: "v1.0.0"
 
 metrics:
   prometheus:
@@ -38,3 +41,6 @@ providers:
   file:
     directory: /dynamic
     watch: true
+
+serversTransport:
+  insecureSkipVerify: true
