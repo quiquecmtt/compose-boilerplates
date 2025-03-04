@@ -31,9 +31,9 @@ services:
       traefik.http.routers.pihole.tls: "true"
       traefik.http.routers.pihole.service: "pihole"
       traefik.http.services.pihole.loadbalancer.server.port: "80"
-      traefik.http.middlewares.pihole-location.plugin.rewriteHeaders.rewrites.response[0].header=Location'
-      traefik.http.middlewares.pihole-location.plugin.rewriteHeaders.rewrites.response[0].regex=^/(.+)$'
-      traefik.http.middlewares.pihole-location.plugin.rewriteHeaders.rewrites.response[0].replacement=/pihole/$1'
+      traefik.http.middlewares.pihole-location.plugin.rewriteHeaders.rewrites.response[0].header: Location
+      traefik.http.middlewares.pihole-location.plugin.rewriteHeaders.rewrites.response[0].regex: ^/(.+)$
+      traefik.http.middlewares.pihole-location.plugin.rewriteHeaders.rewrites.response[0].replacement: /pihole/$1
 
 volumes:
   pihole-data:
