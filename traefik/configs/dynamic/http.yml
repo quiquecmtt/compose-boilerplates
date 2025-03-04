@@ -4,11 +4,6 @@ http:
       redirectScheme:
         scheme: https
 
-      redirect-pihole-admin:
-        redirectRegex:
-          regex: /pihole/$$
-          replacement: /pihole/admin/
-
     strip-prefix:
       stripPrefix:
         forceSlash: true
@@ -53,6 +48,7 @@ http:
       redirectRegex:
         regex: /pihole/$$
         replacement: /pihole/admin
+
     redirect-transmission-web:
       redirectRegex:
         regex: /transmission/
