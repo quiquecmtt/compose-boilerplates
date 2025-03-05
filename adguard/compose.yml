@@ -28,12 +28,12 @@ services:
       traefik.http.routers.adguard.tls: true
       traefik.http.routers.adguard.service: adguard
       traefik.http.services.adguard.loadbalancer.server.port: 80
-      traefik.http.routers.adguard-install.entrypoints: web-secure
-      traefik.http.routers.adguard-install.rule: Host(`home.${TS_TLD:?err}`) && (PathPrefix(`/adguard-install`) || HeaderRegexp(`Referer`,`.*/adguard-install/.*`))
-      traefik.http.routers.adguard-install.middlewares: "authentik-fa@file"
-      traefik.http.routers.adguard-install.tls: true
-      traefik.http.routers.adguard-install.service: adguard-install
-      traefik.http.services.adguard-install.loadbalancer.server.port: 3000
+      traefik.http.routers.install-adguard.entrypoints: web-secure
+      traefik.http.routers.install-adguard.rule: Host(`home.${TS_TLD:?err}`) && (PathPrefix(`/install-adguard`) || HeaderRegexp(`Referer`,`.*/install-adguard/.*`))
+      traefik.http.routers.install-adguard.middlewares: "authentik-fa@file"
+      traefik.http.routers.install-adguard.tls: true
+      traefik.http.routers.install-adguard.service: install-adguard
+      traefik.http.services.install-adguard.loadbalancer.server.port: 3000
 
 volumes:
   app-config:

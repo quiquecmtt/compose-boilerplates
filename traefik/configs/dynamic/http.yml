@@ -9,6 +9,7 @@ http:
         forceSlash: true
         prefixes:
           - /adguard
+          - /install-adguard
           - /portainer
           - /speedtest
           - /redisinsight
