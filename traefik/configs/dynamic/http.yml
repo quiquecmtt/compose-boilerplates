@@ -8,7 +8,7 @@ http:
       stripPrefix:
         forceSlash: true
         prefixes:
-          - /pihole
+          - /adguard
           - /portainer
           - /speedtest
           - /redisinsight
