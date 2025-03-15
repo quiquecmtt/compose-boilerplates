@@ -79,6 +79,22 @@ services:
       traefik.http.routers.node-metrics.tls: true
       traefik.http.routers.node-metrics.service: node-metrics
       traefik.http.services.node-metrics.loadbalancer.server.port: 9100
+  smartctl-exporter:
+    image: docker.io/prometheuscommunity/smartctl-exporter:latest
+    privileged: true
+    command:
+      - --web.telemetry-path=/metrics/smart/
+    profiles:
+      - exporters
+    restart: unless-stopped
+    labels:
+      traefik.enable: true
+      traefik.http.routers.smartctl-metrics.entrypoints: web-secure
+      traefik.http.routers.smartctl-metrics.rule: Host(`${HOSTNAME:?err}.${TS_TLD:?err}`) && PathPrefix(`/metrics/smart`)
+      # traefik.http.routers.smartctl-metrics.middlewares: "authentik-fa@file"
+      traefik.http.routers.smartctl-metrics.tls: true
+      traefik.http.routers.smartctl-metrics.service: smartctl-metrics
+      traefik.http.services.smartctl-metrics.loadbalancer.server.port: 9633
   prometheus:
     image: docker.io/prom/prometheus:latest
     profiles:
