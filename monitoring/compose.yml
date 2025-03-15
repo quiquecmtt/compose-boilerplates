@@ -84,6 +84,9 @@ services:
     privileged: true
     command:
       - --web.telemetry-path=/metrics/smart/
+    networks:
+      default:
+      traefik-network:
     profiles:
       - exporters
     restart: unless-stopped
