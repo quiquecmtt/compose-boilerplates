@@ -82,6 +82,7 @@ services:
   smartctl-exporter:
     image: docker.io/prometheuscommunity/smartctl-exporter:latest
     privileged: true
+    user: root
     command:
       - --web.telemetry-path=/metrics/smart/
     networks:
