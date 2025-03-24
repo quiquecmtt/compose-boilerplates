@@ -7,6 +7,8 @@ services:
       - ${RENDER_GID:-1000}
     devices:
       - /dev/dri:/dev/dri
+    environment:
+      JELLYFIN_PublishedServerUrl: https://play.${TS_TLD:?err}
     networks:
       default:
       traefik-network:
@@ -17,8 +19,6 @@ services:
         source: ${MEDIA_LOCATION:?err}
         target: /media
     restart: unless-stopped
-    environment:
-      - JELLYFIN_PublishedServerUrl=https://play.${TS_TLD:?err}
     labels:
       traefik.enable: true
       traefik.http.routers.jellyfin.rule: Host(`play.${TS_TLD:?err}`)
@@ -29,7 +29,44 @@ services:
       traefik.http.routers.jellyfin.service: jellyfin
       traefik.http.services.jellyfin.loadbalancer.server.port: 8096
     extra_hosts:
-      - 'host.docker.internal:host-gateway'
+      - "host.docker.internal:host-gateway"
+  plex:
+    image: lscr.io/linuxserver/plex:latest
+    environment:
+      PUID: ${PLEX_UID:-1000}
+      PGID: ${PLEX_GUI:-1000}
+      VERSION: docker
+      PLEX_CLAIM: #optional
+    networks:
+      default:
+      traefik-network:
+    ports:
+      - 32400:32400
+      - 1900:1900/udp
+      - 5353:5353/udp
+      - 8324:8324
+      - 32410:32410/udp
+      - 32412:32412/udp
+      - 32413:32413/udp
+      - 32414:32414/udp
+      - 32469:32469
+    volumes:
+      - plex-config:/config
+      - type: bind
+        source: ${MEDIA_LOCATION:?err}
+        target: /media
+    restart: unless-stopped
+    labels:
+      traefik.enable: true
+      traefik.http.routers.plex.rule: Host(`plex.${TS_TLD:?err}`)
+      traefik.http.routers.plex.entrypoints: web-secure
+      # traefik.http.routers.plex.middlewares: plex-headers@file
+      traefik.http.routers.plex.tls: true
+      # traefik.http.routers.plex.tls.options: tls12max@file
+      traefik.http.routers.plex.service: plex
+      traefik.http.services.plex.loadbalancer.server.port: 32400
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
 networks:
   traefik-network:
@@ -39,3 +76,4 @@ networks:
 volumes:
   jellyfin-config:
   jellyfin-cache:
+  plex-config:
