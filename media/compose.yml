@@ -40,7 +40,7 @@ services:
       PUID: ${PLEX_UID:-1000}
       PGID: ${PLEX_GUI:-1000}
       VERSION: docker
-      PLEX_CLAIM: #optional
+      PLEX_CLAIM: ${PLEX_CLAIM} #optional
     networks:
       default:
       traefik-network:
