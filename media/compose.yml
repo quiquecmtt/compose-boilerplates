@@ -32,6 +32,10 @@ services:
       - "host.docker.internal:host-gateway"
   plex:
     image: lscr.io/linuxserver/plex:latest
+    group_add:
+      - ${RENDER_GID:-1000}
+    devices:
+      - /dev/dri:/dev/dri
     environment:
       PUID: ${PLEX_UID:-1000}
       PGID: ${PLEX_GUI:-1000}
