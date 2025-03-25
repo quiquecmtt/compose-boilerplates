@@ -68,6 +68,8 @@ services:
     command:
       - --path.rootfs=/host
       - --web.telemetry-path=/metrics/node/
+    volumes:
+      - "/:/host:ro,rslave"
     profiles:
       - exporters
     restart: unless-stopped
