@@ -15,37 +15,37 @@ x-cddns-common: &cddns-common
 
 services:
   auth:
-    <<: *cddns-commom
+    <<: *cddns-common
     environment:
       <<: *cddns-common-env
       SUBDOMAIN: auth
   home:
-    <<: *cddns-commom
+    <<: *cddns-common
     environment:
       <<: *cddns-common-env
       SUBDOMAIN: home
   monitoring:
-    <<: *cddns-commom
+    <<: *cddns-common
     environment:
       <<: *cddns-common-env
       SUBDOMAIN: monitoring
   photos:
-    <<: *cddns-commom
+    <<: *cddns-common
     environment:
       <<: *cddns-common-env
       SUBDOMAIN: photos
   play:
-    <<: *cddns-commom
+    <<: *cddns-common
     environment:
       <<: *cddns-common-env
       SUBDOMAIN: play
   plex:
-    <<: *cddns-commom
+    <<: *cddns-common
     environment:
       <<: *cddns-common-env
       SUBDOMAIN: plex
   search:
-    <<: *cddns-commom
+    <<: *cddns-common
     environment:
       <<: *cddns-common-env
       SUBDOMAIN: search
