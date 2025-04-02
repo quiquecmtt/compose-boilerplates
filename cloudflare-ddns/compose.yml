@@ -4,6 +4,7 @@ name: cloudflare-ddns
 x-cddns-common: &cddns-common
   image: docker.io/oznu/cloudflare-ddns:latest
   restart: unless-stopped
+  network_mode: host
   dns:
     - 1.1.1.1
     - 8.8.8.8
