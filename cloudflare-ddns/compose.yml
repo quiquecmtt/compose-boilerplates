@@ -1,0 +1,51 @@
+
+name: cloudflare-ddns
+
+x-cddns-common: &cddns-common
+  image: docker.io/oznu/cloudflare-ddns:latest
+  restart: unless-stopped
+  dns:
+    - 1.1.1.1
+    - 8.8.8.8
+  environment: &cddns-common-env
+    API_KEY: ${CLOUDFLARE_API_KEY:?err}
+    ZONE: ${CLOUDFLARE_ZONE:?err}
+    PROXIED: ${CLOUDFLARE_PROXIED:-false}
+
+services:
+  auth:
+    <<: *cddns-commom
+    environment:
+      <<: *cddns-common-env
+      SUBDOMAIN: auth
+  home:
+    <<: *cddns-commom
+    environment:
+      <<: *cddns-common-env
+      SUBDOMAIN: home
+  monitoring:
+    <<: *cddns-commom
+    environment:
+      <<: *cddns-common-env
+      SUBDOMAIN: monitoring
+  photos:
+    <<: *cddns-commom
+    environment:
+      <<: *cddns-common-env
+      SUBDOMAIN: photos
+  play:
+    <<: *cddns-commom
+    environment:
+      <<: *cddns-common-env
+      SUBDOMAIN: play
+  plex:
+    <<: *cddns-commom
+    environment:
+      <<: *cddns-common-env
+      SUBDOMAIN: plex
+  search:
+    <<: *cddns-commom
+    environment:
+      <<: *cddns-common-env
+      SUBDOMAIN: search
+
