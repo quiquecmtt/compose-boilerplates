@@ -11,6 +11,7 @@ x-cddns-common: &cddns-common
     API_KEY: ${CLOUDFLARE_API_KEY:?err}
     ZONE: ${CLOUDFLARE_ZONE:?err}
     PROXIED: ${CLOUDFLARE_PROXIED:-false}
+    RRTYPE: ${RRTYPE:-A}
 
 services:
   auth:
