@@ -68,6 +68,8 @@ services:
     command:
       - --path.rootfs=/host
       - --web.telemetry-path=/metrics/node/
+      - --collector.interrupts
+      - --collector.processes
     volumes:
       - "/:/host:ro,rslave"
     profiles:
