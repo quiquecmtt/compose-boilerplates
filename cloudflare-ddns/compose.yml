@@ -1,4 +1,3 @@
-
 name: cloudflare-ddns
 
 x-cddns-common: &cddns-common
@@ -13,6 +12,7 @@ x-cddns-common: &cddns-common
     ZONE: ${CLOUDFLARE_ZONE:?err}
     PROXIED: ${CLOUDFLARE_PROXIED:-false}
     RRTYPE: ${RRTYPE:-A}
+    DELETE_ON_STOP: ${DELETE_ON_STOP:-true}
 
 services:
   auth:
@@ -50,4 +50,3 @@ services:
     environment:
       <<: *cddns-common-env
       SUBDOMAIN: search
-
