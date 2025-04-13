@@ -62,13 +62,17 @@ services:
     restart: unless-stopped
     labels:
       traefik.enable: true
-      traefik.http.routers.plex.rule: Host(`plex.${TS_TLD:?err}`)
-      traefik.http.routers.plex.entrypoints: web-secure
-      # traefik.http.routers.plex.middlewares: plex-headers@file
-      traefik.http.routers.plex.tls: true
-      # traefik.http.routers.plex.tls.options: tls12max@file
-      traefik.http.routers.plex.service: plex
       traefik.http.services.plex.loadbalancer.server.port: 32400
+      # Tailscale Router
+      traefik.http.routers.plex-ts.rule: Host(`plex.${TS_TLD:?err}`)
+      traefik.http.routers.plex-ts.entrypoints: web-secure
+      traefik.http.routers.plex-ts.tls: true
+      traefik.http.routers.plex-ts.service: plex
+      # Cloudflare DDNS Router
+      traefik.http.routers.plex-cddns.rule: Host(`plex.${CDDNS_TLD:?err}`)
+      traefik.http.routers.plex-cddns.entrypoints: web-secure
+      traefik.http.routers.plex-cddns.tls: true
+      traefik.http.routers.plex-cddns.service: plex
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
