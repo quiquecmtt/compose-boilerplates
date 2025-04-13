@@ -178,6 +178,7 @@ volumes:
   prowlarr-data:
   radarr-data:
   readarr-data:
+  recyclarr-data:
   sonarr-data:
   transmission-data:
 
