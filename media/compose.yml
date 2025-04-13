@@ -73,6 +73,7 @@ services:
       traefik.http.routers.plex-cddns.entrypoints: web-secure
       traefik.http.routers.plex-cddns.tls: true
       traefik.http.routers.plex-cddns.service: plex
+      traefik.http.routers.plex-cddns.tls.certresolver: cloudflare
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
