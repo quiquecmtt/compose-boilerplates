@@ -17,6 +17,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - ts-certs:/ts-certs
       - ts-sockets:/ts-sockets
+      - le-certs:/le-certs
     healthcheck:
       test: touch /dynamic/auto_reload.yml
       interval: 86400s
@@ -76,6 +77,7 @@ services:
       traefik.http.services.speedtest.loadbalancer.server.port: 3000
 
 volumes:
+  le-certs:
   ts-certs:
     external: true
     name: tailscale-certs
