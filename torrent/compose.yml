@@ -105,15 +105,6 @@ services:
       traefik.http.routers.readarr.service: readarr
       traefik.http.services.readarr.loadbalancer.server.port: 8787
 
-  recyclarr:
-    image: ghcr.io/recyclarr/recyclarr:latest
-    user: 1000:1000
-    environment:
-      RECYCLARR_CREATE_CONFIG: true
-    volumes:
-      - recyclarr-data:/config
-    restart: unless-stopped
-
   sonarr: # TV Series
     image: lscr.io/linuxserver/sonarr:latest
     environment:
@@ -178,7 +169,6 @@ volumes:
   prowlarr-data:
   radarr-data:
   readarr-data:
-  recyclarr-data:
   sonarr-data:
   transmission-data:
 
