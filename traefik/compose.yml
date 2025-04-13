@@ -2,8 +2,8 @@ services:
   proxy:
     image: docker.io/traefik:latest
     restart: unless-stopped
-    environment:
-      TS_TLD: ${TS_TLD:?err}
+    env_file:
+      - .env
     extra_hosts:
       - "host.docker.internal:host-gateway"
     ports:
