@@ -81,7 +81,7 @@ services:
       traefik.http.services.radarr.loadbalancer.server.port: 7878
 
   readarr:
-    image: lscr.io/linuxserver/readarr:develop
+    image: lscr.io/linuxserver/readarr:latest
     environment:
       PUID: 1000
       PGID: 1000
