@@ -10,9 +10,10 @@ http:
         prefixes:
           - /adguard
           - /install-adguard
+          - /overseerr
           - /portainer
-          - /speedtest
           - /redisinsight
+          - /speedtest
           - /traefik
           - /whoami
 

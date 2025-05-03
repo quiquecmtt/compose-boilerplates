@@ -32,6 +32,28 @@ services:
       LOG_LEVEL: info
     restart: unless-stopped
 
+  overseerr:
+    image: lscr.io/linuxserver/overseerr:latest
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - overseerr-data:/config
+    networks:
+      default:
+      traefik-network:
+    # ports:
+    #   - 5055:5055
+    restart: unless-stopped
+    labels:
+      traefik.enable: true
+      traefik.http.routers.overseerr.entrypoints: web-secure
+      traefik.http.routers.overseerr.rule: Host(`home.${TS_TLD:?err}`) && PathPrefix(`/overseerr`)
+      traefik.http.routers.overseerr.middlewares: "authentik-fa@file"
+      traefik.http.routers.overseerr.tls: true
+      traefik.http.routers.overseerr.service: bazarr
+      traefik.http.services.overseerr.loadbalancer.server.port: 5055
+
   prowlarr: # Indexer
     image: lscr.io/linuxserver/prowlarr:latest
     environment:
@@ -141,6 +163,7 @@ services:
 
 volumes:
   bazarr-data:
+  overseerr-data:
   prowlarr-data:
   radarr-data:
   sonarr-data:
