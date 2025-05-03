@@ -51,7 +51,7 @@ services:
       traefik.http.routers.overseerr.rule: Host(`home.${TS_TLD:?err}`) && PathPrefix(`/overseerr`)
       traefik.http.routers.overseerr.middlewares: "authentik-fa@file"
       traefik.http.routers.overseerr.tls: true
-      traefik.http.routers.overseerr.service: bazarr
+      traefik.http.routers.overseerr.service: overseerr
       traefik.http.services.overseerr.loadbalancer.server.port: 5055
 
   prowlarr: # Indexer
