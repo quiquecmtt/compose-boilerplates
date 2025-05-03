@@ -10,7 +10,6 @@ http:
         prefixes:
           - /adguard
           - /install-adguard
-          - /overseerr
           - /portainer
           - /redisinsight
           - /speedtest
