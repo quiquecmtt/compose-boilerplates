@@ -48,7 +48,7 @@ services:
     labels:
       traefik.enable: true
       traefik.http.routers.overseerr.entrypoints: web-secure
-      traefik.http.routers.overseerr.rule: Host(`home.${TS_TLD:?err}`) && PathPrefix(`/overseerr`)
+      traefik.http.routers.overseerr.rule: Host(`requests.${TS_TLD:?err}`)
       traefik.http.routers.overseerr.middlewares: "authentik-fa@file"
       traefik.http.routers.overseerr.tls: true
       traefik.http.routers.overseerr.service: overseerr

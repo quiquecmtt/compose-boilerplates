@@ -91,6 +91,17 @@ services:
       - ts-sockets:/ts-sockets
       - ts-certs:/ts-certs
       - ts-state-plex:/var/lib/tailscale
+  requests:
+    <<: *ts-common
+    hostname: requests
+    environment:
+      <<: *ts-common-env
+      TS_SOCKET: /ts-sockets/tailscaled-requests.sock
+      TS_HOSTNAME: requests
+    volumes:
+      - ts-sockets:/ts-sockets
+      - ts-certs:/ts-certs
+      - ts-state-requests:/var/lib/tailscale
   search:
     <<: *ts-common
     hostname: search
@@ -114,6 +125,7 @@ volumes:
   ts-state-photos:
   ts-state-play:
   ts-state-plex:
+  ts-state-requests:
   ts-state-search:
 
 networks:
