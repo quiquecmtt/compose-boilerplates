@@ -17,5 +17,7 @@ tls:
       keyFile: '/ts-certs/play.{{ env "TS_TLD" }}.key'
     - certFile: '/ts-certs/plex.{{ env "TS_TLD" }}.crt'
       keyFile: '/ts-certs/plex.{{ env "TS_TLD" }}.key'
+    - certFile: '/ts-certs/requests.{{ env "TS_TLD" }}.crt'
+      keyFile: '/ts-certs/requests.{{ env "TS_TLD" }}.key'
     - certFile: '/ts-certs/search.{{ env "TS_TLD" }}.crt'
       keyFile: '/ts-certs/search.{{ env "TS_TLD" }}.key'
