@@ -9,14 +9,21 @@ services:
       WATCHTOWER_MONITOR_ONLY: ${WATCHTOWER_MONITOR_ONLY:-false}
       WATCHTOWER_HTTP_API_METRICS: ${WATCHTOWER_HTTP_API_METRICS:-true}
       WATCHTOWER_SCHEDULE: ${WATCHTOWER_SCHEDULE:-0 0 4 * * *}
+      WATCHTOWER_HTTP_API_TOKEN: ${WATCHTOWER_HTTP_API_TOKEN:-helloworld}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     labels:
       traefik.enable: true
       traefik.http.routers.watchtower-metrics.entrypoints: web-secure
       traefik.http.routers.watchtower-metrics.rule: Host(`${HOSTNAME:?err}.${TS_TLD:?err}`) && PathPrefix(`/metrics/container-upgrades`)
-      traefik.http.routers.watchtower-metrics.middlewares: watchtower-replacepath@docker
+      traefik.http.routers.watchtower-metrics.middlewares: watchtower-replacepath@docker,watchtower-auth-headers@docker
       traefik.http.routers.watchtower-metrics.tls: true
       traefik.http.routers.watchtower-metrics.service: watchtower-metrics
       traefik.http.services.watchtower-metrics.loadbalancer.server.port: 8080
       traefik.http.middlewares.watchtower-replacepath.replacepath.path: /v1/metrics
+      traefik.http.middlewares.watchtower-auth-headers.headers.customrequestheaders.Authorization: Bearer ${WATCHTOWER_HTTP_API_TOKEN:-helloworld}
+
+networks:
+  default:
+    name: traefik-net
+    external: true
