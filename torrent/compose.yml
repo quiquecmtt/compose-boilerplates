@@ -155,7 +155,7 @@ services:
       traefik.enable: true
       traefik.passHostHeader: true
       traefik.http.routers.transmission.entrypoints: web-secure
-      traefik.http.routers.transmission.rule: Host(`home.${TS_TLD:?err}`) && (PathPrefix(`/transmission`) || HeaderRegexp(`Referer`, `.*/transmission/.*`))
+      traefik.http.routers.transmission.rule: (host(`home.${ts_tld:?err}`) || host(`home.${ts_tld:?err}:443`) ) && (PathPrefix(`/transmission`) || HeaderRegexp(`Referer`, `.*/transmission/.*`))
       traefik.http.routers.transmission.middlewares: "authentik-fa@file"
       traefik.http.routers.transmission.tls: true
       traefik.http.routers.transmission.service: transmission
