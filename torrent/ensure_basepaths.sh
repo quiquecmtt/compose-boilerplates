@@ -1,8 +1,9 @@
 #! /bin/bash
 
-for svc in {bazarr,prowlarr,radarr,readarr,sonarr}; do
+for svc in {prowlarr,radarr,readarr,sonarr}; do
   docker compose exec -ti ${svc} sed -i "s|<UrlBase></UrlBase>|<UrlBase>/${svc}</UrlBase>|g" /config/config.xml
 done
 
-docker compose restart prowlarr radarr readarr sonarr
+docker compose exec -ti bazarr sed -i "s|base_url: ''|base_url: /bazarr|g" /config/config/config.yaml
 
+docker compose restart prowlarr radarr readarr sonarr
