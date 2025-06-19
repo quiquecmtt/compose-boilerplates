@@ -26,7 +26,7 @@ Stacks available:
 
 Each service can be configured in one way or another to use Authentik as Authentication Provider.
 
-Monitoring exporters available:
+Monitoring exporters available, accessed through Traefik for HTTPS:
 - CAdvisor Exporter: Container metrics exporter. Endpoint: `/metrics/containers`.
 - Node Exporter: Server metrics exporter. Endpoint: `/metrics/node`.
 - SMART Exporter: Disk Metrics exporter. Endpoint: `/metrics/smart`.
