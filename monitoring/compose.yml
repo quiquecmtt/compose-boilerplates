@@ -56,11 +56,27 @@ services:
     profiles:
       - servers
     restart: unless-stopped
+    labels:
+      traefik.enable: true
+      traefik.http.routers.loki.entrypoints: web-secure
+      traefik.http.routers.loki.rule: Host(`monitoring.${TS_TLD:?err}`) && PathPrefix(`/loki`)
+      # traefik.http.routers.loki.middlewares: "authentik-fa@file"
+      traefik.http.routers.loki.tls: true
+      traefik.http.routers.loki.service: loki
+      traefik.http.services.loki.loadbalancer.server.port: 9100
   mimir:
     image: docker.io/grafana/mimir:latest
     profiles:
       - servers
     restart: unless-stopped
+    labels:
+      traefik.enable: true
+      traefik.http.routers.mimir.entrypoints: web-secure
+      traefik.http.routers.mimir.rule: Host(`monitoring.${TS_TLD:?err}`) && PathPrefix(`/mimir`)
+      # traefik.http.routers.mimir.middlewares: "authentik-fa@file"
+      traefik.http.routers.mimir.tls: true
+      traefik.http.routers.mimir.service: mimir
+      traefik.http.services.mimir.loadbalancer.server.port: 9100
   node-exporter:
     image: docker.io/prom/node-exporter:latest
     network_mode: host
@@ -108,6 +124,14 @@ services:
     profiles:
       - servers
     restart: unless-stopped
+    labels:
+      traefik.enable: true
+      traefik.http.routers.prometheus.entrypoints: web-secure
+      traefik.http.routers.prometheus.rule: Host(`monitoring.${TS_TLD:?err}`) && PathPrefix(`/prometheus`)
+      # traefik.http.routers.prometheus.middlewares: "authentik-fa@file"
+      traefik.http.routers.prometheus.tls: true
+      traefik.http.routers.prometheus.service: prometheus
+      traefik.http.services.prometheus.loadbalancer.server.port: 9100
 
 networks:
   traefik-network:
