@@ -56,6 +56,7 @@ jobs:
     env:
       COMPOSE_DIR: ${{ inputs.compose_dir || github.event.inputs.compose_dir }}
       COMPOSE_SECRETS: ${{ inputs.compose_dir || github.event.inputs.compose_dir }}_secrets
+      COMPOSE_VARS: ${{ inputs.compose_dir || github.event.inputs.compose_dir }}_vars
 
     steps:
       - name: Show inputs
@@ -87,10 +88,28 @@ jobs:
       #   run: |
       #     docker compose pull --ignore-pull-failures
 
-      - name: Load Stack environment variables
+      - name: Load Stack environment variables from secret
         if: ${{ secrets[COMPOSE_SECRETS] }}
         run: |
           echo "${{ secrets[COMPOSE_SECRETS] }}" | while read -r line; do
+              # Ensure the line is not empty or a comment
+              if [[ ! -z "$line" && ! "$line" =~ ^# ]]; then
+                # Split the line at the first equals sign to get the key and value
+                KEY=$(echo "$line" | cut -d'=' -f1)
+                VALUE=$(echo "$line" | cut -d'=' -f2-)
+                
+                # Check if the key and value are not empty
+                if [ ! -z "$KEY" ] && [ ! -z "$VALUE" ]; then
+                  echo "$KEY=$VALUE" >> "$GITHUB_ENV"
+                  echo "::notice::Successfully loaded variable: $KEY"
+                fi
+              fi
+            done
+
+      - name: Load Stack environment variables from variable
+        if: ${{ secrets[COMPOSE_VARS] }}
+        run: |
+          echo "${{ secrets[COMPOSE_VARS] }}" | while read -r line; do
               # Ensure the line is not empty or a comment
               if [[ ! -z "$line" && ! "$line" =~ ^# ]]; then
                 # Split the line at the first equals sign to get the key and value
