@@ -97,7 +97,7 @@ jobs:
           COMPOSE_SECRETS: ${{ secrets[format('{0}', env.COMPOSE_SECRETS)] }}
         if: env.COMPOSE_SECRETS != ''
         run: |
-          echo "${{ secrets[COMPOSE_SECRETS] }}" | while read -r line; do
+          echo "${{ env.COMPOSE_SECRETS }}" | while read -r line; do
               # Ensure the line is not empty or a comment
               if [[ ! -z "$line" && ! "$line" =~ ^# ]]; then
                 # Split the line at the first equals sign to get the key and value
@@ -117,7 +117,7 @@ jobs:
           COMPOSE_VARS: ${{ vars[format('{0}', env.COMPOSE_SECRETS)] }}
         if: env.COMPOSE_VARS != ''
         run: |
-          echo "${{ vars[COMPOSE_VARS] }}" | while read -r line; do
+          echo "${{ env.COMPOSE_VARS }}" | while read -r line; do
               # Ensure the line is not empty or a comment
               if [[ ! -z "$line" && ! "$line" =~ ^# ]]; then
                 # Split the line at the first equals sign to get the key and value
