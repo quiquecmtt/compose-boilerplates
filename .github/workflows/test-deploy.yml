@@ -14,6 +14,9 @@ on:
 jobs:
   watchtower:
     runs-on: gha-dev
+    env:
+      HOSTNAME: gha-dev
+      TS_TLD: super-test.ts.net
     defaults:
       run:
         shell: bash
