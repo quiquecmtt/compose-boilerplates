@@ -107,15 +107,17 @@ jobs:
                 # Check if the key and value are not empty
                 if [ ! -z "$KEY" ] && [ ! -z "$VALUE" ]; then
                   echo "$KEY=$VALUE" >> "$GITHUB_ENV"
-                  echo "::notice::Successfully loaded variable: $KEY"
+                  echo "::notice::Successfully loaded secret: $KEY"
                 fi
               fi
             done
 
       - name: Load Stack environment variables from variable
-        if: ${{ secrets[COMPOSE_VARS] }}
+        env:
+          COMPOSE_VARS: ${{ vars[format('{0}', env.COMPOSE_SECRETS)] }}
+        if: env.COMPOSE_VARS != ''
         run: |
-          echo "${{ secrets[COMPOSE_VARS] }}" | while read -r line; do
+          echo "${{ vars[COMPOSE_VARS] }}" | while read -r line; do
               # Ensure the line is not empty or a comment
               if [[ ! -z "$line" && ! "$line" =~ ^# ]]; then
                 # Split the line at the first equals sign to get the key and value
