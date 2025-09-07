@@ -78,7 +78,11 @@ jobs:
 
       # Optional: login to a container registry if secrets provided
       - name: Docker login (optional)
-        if: ${{ secrets.REGISTRY && secrets.REGISTRY_USERNAME && secrets.REGISTRY_PASSWORD }}
+        env:
+          REGISTRY: ${{ secrets.REGISTRY }}
+          REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
+          REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
+        if: env.REGISTRY != '' && env.REGISTRY_USERNAME != '' && env.REGISTRY_PASSWORD != ''
         run: |
           echo "${{ secrets.REGISTRY_PASSWORD }}" | docker login "${{ secrets.REGISTRY }}" \
             --username "${{ secrets.REGISTRY_USERNAME }}" --password-stdin
@@ -89,7 +93,9 @@ jobs:
       #     docker compose pull --ignore-pull-failures
 
       - name: Load Stack environment variables from secret
-        if: ${{ secrets[COMPOSE_SECRETS] }}
+        env:
+          COMPOSE_SECRETS: ${{ secrets[format('{0}', env.COMPOSE_SECRETS)] }}
+        if: env.COMPOSE_SECRETS != ''
         run: |
           echo "${{ secrets[COMPOSE_SECRETS] }}" | while read -r line; do
               # Ensure the line is not empty or a comment
