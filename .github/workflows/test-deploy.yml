@@ -25,4 +25,4 @@ jobs:
       - name: Git Checkout
         uses: actions/checkout@v2
       - name: Deploy watchtower
-        run: docker compose up -d
+        run: docker compose up -d --quiet-pull
