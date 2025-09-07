@@ -1,0 +1,25 @@
+name: Deploy Watchtower
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+      - main
+  pull_request:
+    branches:
+      - master
+      - main
+
+jobs:
+  watchtower:
+    runs-on: gha-dev
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./watchtower
+    steps:
+      - name: Git Checkout
+        uses: actions/checkout@v2
+      - name: Deploy watchtower
+        run: docker compose up -d
