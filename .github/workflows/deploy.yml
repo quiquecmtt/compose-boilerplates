@@ -93,10 +93,12 @@ jobs:
       #     docker compose pull --ignore-pull-failures
 
       - name: Load Stack environment variables from secret
+        working-directory: ${{ env.COMPOSE_DIR }}
         env:
           COMPOSE_SECRETS: ${{ secrets[format('{0}', env.COMPOSE_SECRETS)] }}
         if: env.COMPOSE_SECRETS != ''
         run: |
+          echo -n "" > .env
           echo "${{ env.COMPOSE_SECRETS }}" | tr -d '\r' | while read -r line; do
               # Ensure the line is not empty or a comment
               if [[ ! -z "$line" && ! "$line" =~ ^# ]]; then
@@ -106,13 +108,14 @@ jobs:
                 
                 # Check if the key and value are not empty
                 if [ ! -z "$KEY" ] && [ ! -z "$VALUE" ]; then
-                  echo "$KEY=$VALUE" >> "$GITHUB_ENV"
+                  echo "$KEY=$VALUE" >> .env
                   echo "::notice::Successfully loaded secret: $KEY"
                 fi
               fi
             done
 
       - name: Load Stack environment variables from variable
+        working-directory: ${{ env.COMPOSE_DIR }}
         env:
           COMPOSE_VARS: ${{ vars[format('{0}', env.COMPOSE_VARS)] }}
         if: env.COMPOSE_VARS != ''
@@ -126,7 +129,7 @@ jobs:
                 
                 # Check if the key and value are not empty
                 if [ ! -z "$KEY" ] && [ ! -z "$VALUE" ]; then
-                  echo "$KEY=$VALUE" >> "$GITHUB_ENV"
+                  echo "$KEY=$VALUE" >> .env
                   echo "::notice::Successfully loaded variable: $KEY"
                 fi
               fi
