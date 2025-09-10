@@ -57,6 +57,7 @@ jobs:
       COMPOSE_DIR: ${{ inputs.compose_dir || github.event.inputs.compose_dir }}
       COMPOSE_SECRETS: ${{ inputs.compose_dir || github.event.inputs.compose_dir }}_secrets
       COMPOSE_VARS: ${{ inputs.compose_dir || github.event.inputs.compose_dir }}_vars
+      COMMON_VARS: common_vars
 
     steps:
       - name: Show inputs
