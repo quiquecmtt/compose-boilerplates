@@ -114,7 +114,28 @@ jobs:
               fi
             done
 
-      - name: Load Stack environment variables from variable
+      - name: Load common environment variables
+        working-directory: ${{ env.COMPOSE_DIR }}
+        env:
+          COMMON_VARS: ${{ vars[format('{0}', env.COMMON_VARS)] }}
+        if: env.COMMON_VARS != ''
+        run: |
+          echo "${{ env.COMMON_VARS }}" | tr -d '\r' | while read -r line; do
+              # Ensure the line is not empty or a comment
+              if [[ ! -z "$line" && ! "$line" =~ ^# ]]; then
+                # Split the line at the first equals sign to get the key and value
+                KEY=$(echo "$line" | cut -d'=' -f1)
+                VALUE=$(echo "$line" | cut -d'=' -f2-)
+                
+                # Check if the key and value are not empty
+                if [ ! -z "$KEY" ] && [ ! -z "$VALUE" ]; then
+                  echo "$KEY=$VALUE" >> .env
+                  echo "::notice::Successfully loaded variable: $KEY"
+                fi
+              fi
+            done
+
+      - name: Load Stack environment variables
         working-directory: ${{ env.COMPOSE_DIR }}
         env:
           COMPOSE_VARS: ${{ vars[format('{0}', env.COMPOSE_VARS)] }}
