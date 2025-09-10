@@ -6,4 +6,4 @@ done
 
 docker compose exec -ti bazarr sed -i "s|base_url: ''|base_url: /bazarr|g" /config/config/config.yaml
 
-docker compose restart prowlarr radarr sonarr
+docker compose restart prowlarr radarr sonarr bazarr
