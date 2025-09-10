@@ -32,5 +32,5 @@ jobs:
     needs: traefik
     with:
       runner_label: gha-dev
-      compose_dir: time-machine
+      compose_dir: torrent
     secrets: inherit
