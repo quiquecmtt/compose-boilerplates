@@ -177,13 +177,13 @@ jobs:
         working-directory: ${{ env.COMPOSE_DIR }}
         run: |
           sleep 20
-          if ls ./pre-scripts/*.sh 1> /dev/null 2>&1; then
-            for f in ./pre-scripts/*.sh; do
+          if ls ./post-scripts/*.sh 1> /dev/null 2>&1; then
+            for f in ./post-scripts/*.sh; do
               echo "Running $f"
               bash "$f"
             done
           else
-            echo "No pre-scripts found, skipping."
+            echo "No post-scripts found, skipping."
           fi
 
       # - name: Show status
