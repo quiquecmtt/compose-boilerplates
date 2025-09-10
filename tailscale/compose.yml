@@ -127,8 +127,3 @@ volumes:
   ts-state-plex:
   ts-state-requests:
   ts-state-search:
-
-networks:
-  default:
-    external: true
-    name: traefik-net
