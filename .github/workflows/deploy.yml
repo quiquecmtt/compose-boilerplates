@@ -159,8 +159,7 @@ jobs:
 
       - name: Run pre-deployment scripts
         working-directory: ${{ env.COMPOSE_DIR }}
-        run: echo ${{ hashFiles('pre-scripts/*') != '' }}
-        # run: for f in ./pre-scripts/*.sh; do bash "$f"; done
+        run: for f in ./pre-scripts/*.sh; do bash "$f"; done
 
       - name: Deploy using compose
         working-directory: ${{ env.COMPOSE_DIR }}
@@ -168,7 +167,6 @@ jobs:
 
       - name: Run post-deployment scripts
         working-directory: ${{ env.COMPOSE_DIR }}
-        if: ${{ hashFiles('post-scripts/*') != '' }}
         run: sleep 20; for f in ./post-scripts/*.sh; do bash "$f"; done
 
       # - name: Show status
