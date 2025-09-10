@@ -9,6 +9,7 @@ jobs:
     with:
       runner_label: gha-dev
       compose_dir: tailscale
+    secrets: inherit
 
   traefik:
     uses: ./.github/workflows/deploy.yml
