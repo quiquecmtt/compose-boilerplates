@@ -157,9 +157,19 @@ jobs:
               fi
             done
 
+      - name: Run pre-deployment scripts
+        working-directory: ${{ env.COMPOSE_DIR }}
+        if: ${{ exists('pre-scripts/') }}
+        run: for f in ./pre-scripts/*.sh; do bash "$f"; done
+
       - name: Deploy using compose
         working-directory: ${{ env.COMPOSE_DIR }}
         run: docker compose up -d --remove-orphans --quiet-pull
+
+      - name: Run post-deployment scripts
+        working-directory: ${{ env.COMPOSE_DIR }}
+        if: ${{ exists('post-scripts/') }}
+        run: sleep 20; for f in ./post-scripts/*.sh; do bash "$f"; done
 
       # - name: Show status
       #   working-directory: ${{ env.COMPOSE_DIR }}
