@@ -21,13 +21,15 @@ jobs:
 
   watchtower:
     uses: ./.github/workflows/deploy.yml
+    needs: traefik
     with:
       runner_label: gha-dev
       compose_dir: watchtower
     secrets: inherit
 
-  time-machine:
+  torrent:
     uses: ./.github/workflows/deploy.yml
+    needs: traefik
     with:
       runner_label: gha-dev
       compose_dir: time-machine
