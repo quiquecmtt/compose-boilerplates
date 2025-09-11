@@ -110,7 +110,7 @@ jobs:
                 # Check if the key and value are not empty
                 if [ ! -z "$KEY" ] && [ ! -z "$VALUE" ]; then
                   echo "$KEY=$VALUE" >> .env
-                  echo "::notice::Successfully loaded secret: $KEY"
+                  echo "Successfully loaded secret: $KEY"
                 fi
               fi
             done
