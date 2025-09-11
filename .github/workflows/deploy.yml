@@ -131,7 +131,7 @@ jobs:
                 # Check if the key and value are not empty
                 if [ ! -z "$KEY" ] && [ ! -z "$VALUE" ]; then
                   echo "$KEY=$VALUE" >> .env
-                  echo "::notice::Successfully loaded variable: $KEY"
+                  echo "Successfully loaded variable: $KEY"
                 fi
               fi
             done
@@ -152,7 +152,7 @@ jobs:
                 # Check if the key and value are not empty
                 if [ ! -z "$KEY" ] && [ ! -z "$VALUE" ]; then
                   echo "$KEY=$VALUE" >> .env
-                  echo "::notice::Successfully loaded variable: $KEY"
+                  echo "Successfully loaded variable: $KEY"
                 fi
               fi
             done
