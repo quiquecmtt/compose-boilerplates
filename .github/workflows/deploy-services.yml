@@ -19,12 +19,12 @@ jobs:
       compose_dir: traefik
     secrets: inherit
 
-  watchtower:
+  searxng:
     uses: ./.github/workflows/deploy.yml
     needs: traefik
     with:
       runner_label: gha-dev
-      compose_dir: watchtower
+      compose_dir: searxng
     secrets: inherit
 
   torrent:
@@ -33,4 +33,12 @@ jobs:
     with:
       runner_label: gha-dev
       compose_dir: torrent
+    secrets: inherit
+
+  watchtower:
+    uses: ./.github/workflows/deploy.yml
+    needs: traefik
+    with:
+      runner_label: gha-dev
+      compose_dir: watchtower
     secrets: inherit
