@@ -24,7 +24,7 @@ jobs:
     needs: traefik
     with:
       runner_label: gha-dev
-      compsoe_dir: portainer
+      compose_dir: portainer
     secrets: inherit
 
   searxng:
