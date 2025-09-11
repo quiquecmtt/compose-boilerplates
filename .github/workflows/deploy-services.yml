@@ -19,6 +19,14 @@ jobs:
       compose_dir: traefik
     secrets: inherit
 
+  portainer:
+    uses: ./.github/workflows/deploy.yml
+    needs: traefik
+    with:
+      runner_label: gha-dev
+      compsoe_dir: portainer
+    secrets: inherit
+
   searxng:
     uses: ./.github/workflows/deploy.yml
     needs: traefik
