@@ -1,0 +1,201 @@
+name: Deploy Compose
+
+on:
+  # Manual trigger
+  workflow_dispatch:
+    inputs:
+      runner_label:
+        description: "Self-hosted runner label to target (in addition to 'self-hosted')"
+        type: string
+        required: true
+        default: "runner-docker"
+      compose_dir:
+        description: "Relative path to the Compose directory"
+        type: string
+        required: true
+        default: "stacks/example"
+
+  # Allow other workflows to call this one
+  workflow_call:
+    inputs:
+      runner_label:
+        description: "Self-hosted runner label to target (in addition to 'self-hosted')"
+        type: string
+        required: true
+        default: "runner-docker"
+      compose_dir:
+        description: "Relative path to the Compose directory"
+        type: string
+        required: true
+    secrets:
+      REGISTRY_USERNAME:
+        required: false
+      REGISTRY_PASSWORD:
+        required: false
+      REGISTRY:
+        required: false
+
+permissions:
+  contents: read
+
+# Avoid overlapping deploys to the same dir on the same runner pool
+concurrency:
+  group: deploy-${{ inputs.runner_label || github.event.inputs.runner_label }}-${{ inputs.compose_dir || github.event.inputs.compose_dir }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    # Target: self-hosted runner + the provided label
+    runs-on:
+      - self-hosted
+      - ${{ inputs.runner_label || github.event.inputs.runner_label }}
+
+    # Optional: use an environment with scoped secrets/approvals named after the label
+    environment: ${{ inputs.runner_label || github.event.inputs.runner_label }}
+
+    env:
+      COMPOSE_DIR: ${{ inputs.compose_dir || github.event.inputs.compose_dir }}
+      COMPOSE_SECRETS: ${{ inputs.compose_dir || github.event.inputs.compose_dir }}_secrets
+      COMPOSE_VARS: ${{ inputs.compose_dir || github.event.inputs.compose_dir }}_vars
+      COMMON_VARS: common_vars
+
+    steps:
+      - name: Show inputs
+        run: |
+          echo "Runner label = ${{ inputs.runner_label || github.event.inputs.runner_label }}"
+          echo "Compose dir  = $COMPOSE_DIR"
+
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Validate compose directory
+        working-directory: ${{ env.COMPOSE_DIR }}
+        run: |
+          test -d . || (echo "Compose dir not found: $PWD" && exit 1)
+          if [ ! -f "compose.yml" ] && [ ! -f "docker-compose.yml" ]; then
+            echo "No compose.yml or docker-compose.yml in $PWD"
+            exit 1
+          fi
+
+      # Optional: login to a container registry if secrets provided
+      - name: Docker login (optional)
+        env:
+          REGISTRY: ${{ secrets.REGISTRY }}
+          REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
+          REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
+        if: env.REGISTRY != '' && env.REGISTRY_USERNAME != '' && env.REGISTRY_PASSWORD != ''
+        run: |
+          echo "${{ secrets.REGISTRY_PASSWORD }}" | docker login "${{ secrets.REGISTRY }}" \
+            --username "${{ secrets.REGISTRY_USERNAME }}" --password-stdin
+
+      # - name: Pull images
+      #   working-directory: ${{ env.COMPOSE_DIR }}
+      #   run: |
+      #     docker compose pull --ignore-pull-failures
+
+      - name: Load Stack environment variables from secret
+        working-directory: ${{ env.COMPOSE_DIR }}
+        env:
+          COMPOSE_SECRETS: ${{ secrets[format('{0}', env.COMPOSE_SECRETS)] }}
+        if: env.COMPOSE_SECRETS != ''
+        run: |
+          echo -n "" > .env
+          echo "${{ env.COMPOSE_SECRETS }}" | tr -d '\r' | while read -r line; do
+              # Ensure the line is not empty or a comment
+              if [[ ! -z "$line" && ! "$line" =~ ^# ]]; then
+                # Split the line at the first equals sign to get the key and value
+                KEY=$(echo "$line" | cut -d'=' -f1)
+                VALUE=$(echo "$line" | cut -d'=' -f2-)
+                
+                # Check if the key and value are not empty
+                if [ ! -z "$KEY" ] && [ ! -z "$VALUE" ]; then
+                  echo "$KEY=$VALUE" >> .env
+                  echo "Successfully loaded secret: $KEY"
+                fi
+              fi
+            done
+
+      - name: Load common environment variables
+        working-directory: ${{ env.COMPOSE_DIR }}
+        env:
+          COMMON_VARS: ${{ vars[format('{0}', env.COMMON_VARS)] }}
+        if: env.COMMON_VARS != ''
+        run: |
+          echo "${{ env.COMMON_VARS }}" | tr -d '\r' | while read -r line; do
+              # Ensure the line is not empty or a comment
+              if [[ ! -z "$line" && ! "$line" =~ ^# ]]; then
+                # Split the line at the first equals sign to get the key and value
+                KEY=$(echo "$line" | cut -d'=' -f1)
+                VALUE=$(echo "$line" | cut -d'=' -f2-)
+                
+                # Check if the key and value are not empty
+                if [ ! -z "$KEY" ] && [ ! -z "$VALUE" ]; then
+                  echo "$KEY=$VALUE" >> .env
+                  echo "Successfully loaded variable: $KEY"
+                fi
+              fi
+            done
+
+      - name: Load Stack environment variables
+        working-directory: ${{ env.COMPOSE_DIR }}
+        env:
+          COMPOSE_VARS: ${{ vars[format('{0}', env.COMPOSE_VARS)] }}
+        if: env.COMPOSE_VARS != ''
+        run: |
+          echo "${{ env.COMPOSE_VARS }}" | tr -d '\r' | while read -r line; do
+              # Ensure the line is not empty or a comment
+              if [[ ! -z "$line" && ! "$line" =~ ^# ]]; then
+                # Split the line at the first equals sign to get the key and value
+                KEY=$(echo "$line" | cut -d'=' -f1)
+                VALUE=$(echo "$line" | cut -d'=' -f2-)
+                
+                # Check if the key and value are not empty
+                if [ ! -z "$KEY" ] && [ ! -z "$VALUE" ]; then
+                  echo "$KEY=$VALUE" >> .env
+                  echo "Successfully loaded variable: $KEY"
+                fi
+              fi
+            done
+
+      - name: Run pre-deployment scripts
+        working-directory: ${{ env.COMPOSE_DIR }}
+        run: |
+          if ls ./pre-scripts/*.sh 1> /dev/null 2>&1; then
+            for f in ./pre-scripts/*.sh; do
+              echo "Running $f"
+              bash "$f"
+            done
+          else
+            echo "No pre-scripts found, skipping."
+          fi
+
+      - name: Deploy using compose
+        working-directory: ${{ env.COMPOSE_DIR }}
+        run: docker compose up -d --remove-orphans --quiet-pull
+
+      - name: Run post-deployment scripts
+        working-directory: ${{ env.COMPOSE_DIR }}
+        run: |
+          sleep 20
+          if ls ./post-scripts/*.sh 1> /dev/null 2>&1; then
+            for f in ./post-scripts/*.sh; do
+              echo "Running $f"
+              bash "$f"
+            done
+          else
+            echo "No post-scripts found, skipping."
+          fi
+
+      # - name: Show status
+      #   working-directory: ${{ env.COMPOSE_DIR }}
+      #   run: |
+      #     docker compose ps
+      #     echo
+      #     echo "Recent container logs (last 100 lines per service):"
+      #     set +e
+      #     for s in $(docker compose config --services); do
+      #       echo "---- $s ----"
+      #       docker compose logs --no-color --tail=100 "$s" || true
+      #       echo
+      #     done
+      #     set -e

@@ -1,0 +1,52 @@
+name: Deploy All
+
+on:
+  workflow_dispatch:
+
+jobs:
+  tailscale:
+    uses: ./.github/workflows/deploy.yml
+    with:
+      runner_label: gha-dev
+      compose_dir: tailscale
+    secrets: inherit
+
+  traefik:
+    uses: ./.github/workflows/deploy.yml
+    needs: tailscale
+    with:
+      runner_label: gha-dev
+      compose_dir: traefik
+    secrets: inherit
+
+  portainer:
+    uses: ./.github/workflows/deploy.yml
+    needs: traefik
+    with:
+      runner_label: gha-dev
+      compose_dir: portainer
+    secrets: inherit
+
+  searxng:
+    uses: ./.github/workflows/deploy.yml
+    needs: traefik
+    with:
+      runner_label: gha-dev
+      compose_dir: searxng
+    secrets: inherit
+
+  torrent:
+    uses: ./.github/workflows/deploy.yml
+    needs: traefik
+    with:
+      runner_label: gha-dev
+      compose_dir: torrent
+    secrets: inherit
+
+  watchtower:
+    uses: ./.github/workflows/deploy.yml
+    needs: traefik
+    with:
+      runner_label: gha-dev
+      compose_dir: watchtower
+    secrets: inherit
