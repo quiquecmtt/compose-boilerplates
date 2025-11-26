@@ -2,7 +2,7 @@ name: watchtower
 
 services:
   app:
-    image: docker.io/containrrr/watchtower:latest
+    image: docker.io/nickfedor/watchtower:latest
     restart: unless-stopped
     environment:
       WATCHTOWER_CLEANUP: ${WATCHTOWER_CLEANUP:-false}
