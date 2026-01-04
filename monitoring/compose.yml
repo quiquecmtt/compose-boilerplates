@@ -1,0 +1,30 @@
+services:
+  beszel:
+    image: "docker.io/henrygd/beszel:latest"
+    profiles:
+      - servers
+    restart: unless-stopped
+    # ports:
+    #   - '8090:8090'
+    volumes:
+      - beszel-data:/beszel_data
+    networks:
+      traefik-network:
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    labels:
+      traefik.enable: true
+      traefik.http.routers.beszel.entrypoints: web-secure
+      traefik.http.routers.beszel.rule: Host(`monitoring.${TS_TLD:?err}`)
+      # traefik.http.routers.beszel.middlewares: "authentik-fa@file"
+      traefik.http.routers.beszel.tls: true
+      traefik.http.routers.beszel.service: beszel
+      traefik.http.services.beszel.loadbalancer.server.port: 8090
+
+networks:
+  traefik-network:
+    name: traefik-net
+    external: true
+
+volumes:
+  beszel-data:
