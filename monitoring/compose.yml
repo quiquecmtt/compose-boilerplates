@@ -1,8 +1,6 @@
 services:
   beszel:
     image: "docker.io/henrygd/beszel:latest"
-    profiles:
-      - servers
     restart: unless-stopped
     # ports:
     #   - '8090:8090'
