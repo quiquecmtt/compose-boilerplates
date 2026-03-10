@@ -161,6 +161,32 @@ services:
       traefik.http.routers.transmission.service: transmission
       traefik.http.services.transmission.loadbalancer.server.port: 9091
 
+  cleanuparr:
+    image: ghcr.io/cleanuparr/cleanuparr:latest
+    restart: unless-stopped
+    environment:
+      PORT: 11011
+      BASE_PATH: /cleanuparr
+      PUID: ${CLEANUPARR_UID:-1000}
+      PGID: ${CLEANUPARR_GID:-1000}
+      UMASK: "022"
+      TZ: ${TZ:-Etc/UTC}
+    # ports:
+    #   - 11011:11011
+    volumes:
+      - cleanuparr-config:/config
+    networks:
+      - default
+      - traefik-network
+    labels:
+      traefik.enable: true
+      traefik.http.routers.cleanuparr.entrypoints: web-secure
+      traefik.http.routers.cleanuparr.rule: Host(`home.${TS_TLD:?err}`) && (PathPrefix(`/cleanuparr`) || HeaderRegexp(`Referer`, `.*/cleanuparr/.*`))
+      traefik.http.routers.cleanuparr.middlewares: "authentik-fa@file"
+      traefik.http.routers.cleanuparr.tls: true
+      traefik.http.routers.cleanuparr.service: cleanuparr
+      traefik.http.services.cleanuparr.loadbalancer.server.port: 11011
+
 volumes:
   bazarr-data:
   overseerr-data:
@@ -168,6 +194,7 @@ volumes:
   radarr-data:
   sonarr-data:
   transmission-data:
+  cleanuparr-config:
 
 networks:
   traefik-network:
