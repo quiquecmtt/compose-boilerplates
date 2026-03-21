@@ -1,0 +1,15 @@
+services:
+  squid:
+    image: ubuntu/squid:latest
+    container_name: squid
+    restart: unless-stopped
+    ports:
+      - "3128:3128"
+    volumes:
+      - ./config/squid.conf:/etc/squid/squid.conf:ro
+      - squid-cache:/var/spool/squid
+      - squid-logs:/var/log/squid
+
+volumes:
+  squid-cache:
+  squid-logs:
