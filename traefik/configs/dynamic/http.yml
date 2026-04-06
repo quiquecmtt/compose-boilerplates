@@ -11,6 +11,7 @@ http:
           - /adguard
           - /install-adguard
           - /portainer
+          - /qbittorrent
           - /redisinsight
           - /speedtest
           - /traefik
