@@ -11,7 +11,6 @@ http:
           - /adguard
           - /install-adguard
           - /portainer
-          - /qbittorrent
           - /redisinsight
           - /speedtest
           - /traefik
@@ -55,6 +54,18 @@ http:
       redirectRegex:
         regex: /transmission/
         replacement: /transmission/web/
+
+    qbittorrent-redirect:
+      redirectRegex:
+        regex: ^/qbittorrent$
+        replacement: /qbittorrent/
+
+    qbittorrent-headers:
+      headers:
+        customRequestHeaders:
+          X-Frame-Options: SAMEORIGIN
+          Referer: ""
+          Origin: ""
 
   routers:
     redirect-to-https:

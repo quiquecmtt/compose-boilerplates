@@ -167,7 +167,6 @@ services:
       PUID: 1000
       PGID: 1000
       TZ: ${TZ:-Etc/UTC}
-      # WEBUI_PORT: 8080
     volumes:
       - qbittorrent-data:/config
       - type: bind
@@ -182,13 +181,13 @@ services:
       traefik-network:
     labels:
       traefik.enable: true
-      traefik.passHostHeader: true
       traefik.http.routers.qbittorrent.entrypoints: web-secure
       traefik.http.routers.qbittorrent.rule: Host(`home.${TS_TLD:?err}`) && (PathPrefix(`/qbittorrent`) || HeaderRegexp(`Referer`, `.*/qbittorrent/.*`))
-      traefik.http.routers.qbittorrent.middlewares: "strip-prefix@file,authentik-fa@file"
+      traefik.http.routers.qbittorrent.middlewares: "qbittorrent-redirect@file,qbittorrent-headers@file,strip-prefix@file,authentik-fa@file"
       traefik.http.routers.qbittorrent.tls: true
       traefik.http.routers.qbittorrent.service: qbittorrent
       traefik.http.services.qbittorrent.loadbalancer.server.port: 8080
+      traefik.http.services.qbittorrent.loadbalancer.passhostheader: false
 
   cleanuparr:
     image: ghcr.io/cleanuparr/cleanuparr:latest
